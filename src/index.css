@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  /* Default (Light) Theme */
+  --color-bg: hsl(0 100% 100%);       
+  --color-secondary: hsl(250 30% 25%);     /* Deep purple */
+  --color-accent: hsl(10 100% 50%);      /* Bright red accent */
+}
+
+@layer theme {
+  /* Dark Theme */
+  [data-theme='dark'] {
+    --color-bg: hsl(0, 0%, 20%);      /* Very dark blue-gray */
+    --color-secondary: hsl(0, 0%, 90%);    /* Deep magenta purple */
+    --color-accent: hsl(226, 76%, 74%)    /* Warm gold accent */
+  }
+}
