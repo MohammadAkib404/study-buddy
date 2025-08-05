@@ -26,12 +26,12 @@ function Header() {
 
     return (
         <header className='flex justify-between px-8 md:px-12 py-3 bg-bg text-secondary border-b border-slate-700/50'>
-            <h1 className='flex items-center gap-2 text-2xl font-semibold'>
+            <h1 className='flex items-center gap-2 text-2xl font-bold'>
                 <Icon icon="devicon:tailwindcss" width="30" height="30" />
-                <span className=''>tailwindcss</span>
+                <span className='w-max'>Smart Study</span>
             </h1>
 
-            <div className={`fixed top-15 transition-all duration-300 ease-in-out ${menu? 'h-6/10 opacity-100': 'h-0 opacity-0'} left-0 w-screen sm:static bg-bg p-6 sm:p-0 flex items-start gap-y-4 flex-col sm:flex-row sm:items-center sm:justify-end space-x-4 list-none`}>
+            <div className={`bg-bg font-semibold fixed top-15 transition-all duration-300 ease-in-out ${menu? 'h-6/10 opacity-100': 'h-0 opacity-0'} left-0 w-screen sm:static p-6 sm:p-0 flex items-start gap-y-4 flex-col sm:flex-row sm:items-center sm:justify-end space-x-4 list-none`}>
                 <li className='group'>
                     <a className='relative p-1' href="#">Products
                         <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300'></span>
