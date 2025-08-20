@@ -4,16 +4,20 @@
 
 @theme {
   /* Default (Light) Theme */
-  --color-bg: hsl(0 100% 100%);       
-  --color-secondary: hsl(250 30% 25%);     /* Deep purple */
-  --color-accent: hsl(10 100% 50%);      /* Bright red accent */
+  --color-bg: hsl(0 100% 100%); /* white */
+  --color-secondary: hsl(250 30% 25%); /* purple */
+  --color-accent: hsl(140, 60%, 50%); /* Green */
+  --color-neutral: hsl(0, 0%, 15%); /* Black */
+  --color-tertiary: hsl(0, 0%, 40%);
 }
 
 @layer theme {
   /* Dark Theme */
-  [data-theme='dark'] {
-    --color-bg: hsl(0, 0%, 20%);      /* Very dark blue-gray */
-    --color-secondary: hsl(0, 0%, 90%);    /* Deep magenta purple */
-    --color-accent: hsl(226, 76%, 74%)    /* Warm gold accent */
+  [data-theme="dark"] {
+    --color-bg: hsl(0, 0%, 20%); /* Very dark blue-gray */
+    --color-secondary: hsl(0, 0%, 90%); /* Deep magenta purple */
+    --color-accent: hsl(140, 60%, 50%); /* Green */
+    --color-neutral: hsl(0, 0%, 95%); /* White */
+    --color-tertiary: hsl(0, 0%, 40%);
   }
 }
