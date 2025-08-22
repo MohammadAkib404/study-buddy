@@ -83,7 +83,7 @@ function Quiz() {
     ]
 
     const location = useLocation();
-    const data = location.state.questions || dummyData;
+    const data = location.state?.questions || dummyData;
 
     const quizData = data;
 
@@ -103,26 +103,26 @@ function Quiz() {
     }
 
     return (
-        <section className='p-5 '>
-            <div className='border-1 rounded-2xl max-w-3xl px-8 py-10 m-auto'>
-                <div className='flex justify-between'>
+        <section className='sm:p-5'>
+            <div className='sm:border-1 rounded-2xl max-w-3xl px-6 sm:px-8 py-10 m-auto'>
+                <div className='flex gap-3 justify-between'>
                     <div className='flex items-center gap-2'>
                         <BookOpen color='green' className='w-12 h-12 bg-accent/30 p-2.5 rounded-lg' />
-                        <h2 className='text-2xl font-bold'>Nazism & Rise of Hitler</h2>
+                        <h2 className='text-xl sm:text-2xl font-bold'>Nazism & Rise of Hitler</h2>
                     </div>
                     <div>
-                        <span>Question</span>
-                        <p className=''>1/8</p>
+                        <span className='hidden sm:inline'>Question</span>
+                        <p className='font-bold text-orange-400'>1/8</p>
                     </div>
                 </div>
                 <div className='flex flex-col'>
-                    <h4 className='text-2xl font-bold my-8'>{index + 1}. {currentQuestion.question}</h4>
+                    <h4 className='text-lg sm:text-2xl font-bold my-8'>{index + 1}. {currentQuestion.question}</h4>
                     <div className="flex flex-col gap-5">
                         {currentQuestion.options.map((option, index) => {
                             let extraClass = "";
 
                             if (selected !== null) {
-                                if (index === currentQuestion.ans - 1) {
+                                if (index === currentQuestion.ans) {
                                     extraClass = "bg-green-400"; // ✅ correct answer
                                 } else if (index === selected) {
                                     extraClass = "bg-red-400";   // ❌ wrong answer
@@ -143,7 +143,7 @@ function Quiz() {
                         <br />
                     </div>
                     <div className='w-full flex justify-end '>
-                        <button onClick={changeQuestion} className='bg-secondary text-bg font-semibold px-6 py-3 rounded-lg '>Next</button>
+                        <button onClick={changeQuestion} className='bg-accent text-text font-semibold px-6 py-3 rounded-lg '>Next</button>
                     </div>
 
                 </div>

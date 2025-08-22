@@ -16,7 +16,7 @@ Generate 15–20 multiple-choice questions (MCQs) based on the above text, align
     "options": ["opt1", "opt2", "opt3", "opt4"],
     "ans": number
   }
-- "ans" must be a number (1–4).
+- "ans" must be a number (1,2,3,4);
 - Each option must not exceed 60 characters (excluding spaces).
 - Avoid repeating similar questions.
 - Mix easy, moderate, and higher-order thinking.

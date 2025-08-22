@@ -124,30 +124,30 @@ const TextExtractor = () => {
   };
 
   return (
-    <div className="min-h-screen text-neutral p-6">
+    <div className="min-h-screen text-text-primary p-5 sm:p-6">
       <ToastContainer />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-            <FileText className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 hover:scale-105 rounded-full mb-4">
+            <FileText className="w-8 h-8 text-gray-100" />
           </div>
-          <h1 className="text-4xl font-bold mb-2">PDF Text Extractor</h1>
-          <p className="text-lg text-tertiary">Upload a PDF file and extract all its text content</p>
+          <h1 className="text-4xl font-bold mb-2">AI MCQ's Generator</h1>
+          <p className="text-lg text-tertiary">Upload a PDF file and extract all its text content and generate MCQ Question with AI</p>
         </div>
 
         {/* Upload Area */}
-        <div className="bg-highlight rounded-xl border-1 border-border p-8 mb-6">
+        <div className="bg-bg-muted rounded-xl border-1 border-border p-6 sm:p-8 mb-6">
           <div
-            className="border-2 border-dashed border-blue-400 rounded-lg p-8 text-center hover:border-blue-500 transition-colors"
+            className="border-2 border-dashed border-blue-600 rounded-lg p-8 text-center hover:scale-98 transition-all"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <Upload className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+            <Upload className="w-12 h-12 text-blue-600 mx-auto mb-4" />
             <div className="mb-4">
-              <p className="text-lg font-semibold text-neutral mb-2">
+              <p className="text-lg font-semibold text-text-primary mb-2 hidden sm:block">
                 Drop your PDF file here or click to browse
               </p>
-              <p className="text-sm text-tertiary">Supports PDF files up to 50MB</p>
+              <p className="text-sm text-tertiary hidden sm:block">Supports PDF files up to 50MB</p>
             </div>
             <input
               type="file"
@@ -158,7 +158,7 @@ const TextExtractor = () => {
             />
             <label
               htmlFor="pdf-upload"
-              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 cursor-pointer transition-colors"
+              className="inline-flex items-center text-sm px-4 text-nowrap py-3 bg-blue-600 text-white font-semibold rounded-lg hover:scale-110 cursor-pointer transition-all"
             >
               <Upload className="w-5 h-5 mr-2" />
               Choose PDF File
@@ -227,17 +227,17 @@ const TextExtractor = () => {
 
         {/* Instructions */}
         {!extractedText && !isLoading && (
-          <div className="bg-highlight border-1 border-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-text mb-3">How to use:</h3>
-            <ol className="list-decimal list-inside space-y-2 text-text">
+          <div className="bg-bg-muted border-1 border-border rounded-xl p-4 sm:p-6">
+            <h3 className="text-lg font-semibold text-text-primary mb-3">How to use:</h3>
+            <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base text-text-primary">
               <li>Click "Choose PDF File" or drag and drop a PDF file into the upload area</li>
               <li>Wait for the text extraction process to complete</li>
               <li>Review the extracted text in the display area</li>
               <li>Copy the text to clipboard or download it as a text file</li>
             </ol>
 
-            <div className="mt-6 p-4 bg-tertiary/10 border border-text/70 rounded-lg">
-              <p className="text-sm text-text">
+            <div className="mt-6 p-3 bg-tertiary/10 border border-text/70 rounded-lg">
+              <p className="text-xs sm:text-sm text-text-primary">
                 <strong>Note:</strong> This tool works best with text-based PDFs. Scanned documents or image-based PDFs may not extract properly and would require OCR processing.
               </p>
             </div>
