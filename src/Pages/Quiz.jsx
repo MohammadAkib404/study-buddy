@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { BookOpen } from 'lucide-react'
 import { useLocation } from 'react-router-dom';
 
 function Quiz() {
@@ -107,7 +106,7 @@ function Quiz() {
             <div className='sm:border-1 rounded-2xl max-w-3xl px-6 sm:px-8 py-10 m-auto'>
                 <div className='flex gap-3 justify-between'>
                     <div className='flex items-center gap-2'>
-                        <BookOpen color='green' className='w-12 h-12 bg-accent/30 p-2.5 rounded-lg' />
+                        <BookOpen color='green' className='w-12 h-12 bg-brand/30 p-2.5 rounded-lg' />
                         <h2 className='text-xl sm:text-2xl font-bold'>Nazism & Rise of Hitler</h2>
                     </div>
                     <div>
@@ -143,7 +142,7 @@ function Quiz() {
                         <br />
                     </div>
                     <div className='w-full flex justify-end '>
-                        <button onClick={changeQuestion} className='bg-accent text-text font-semibold px-6 py-3 rounded-lg '>Next</button>
+                        <button onClick={changeQuestion} className='bg-brand text-text font-semibold px-6 py-3 rounded-lg '>Next</button>
                     </div>
 
                 </div>

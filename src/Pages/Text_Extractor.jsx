@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { Upload, FileText, Download, Copy, AlertCircle } from 'lucide-react';
-import getMCQ from '../API_Connection';
-import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useState } from "react";
+import { Upload, FileText, Download, Copy, AlertCircle, Plus, ChevronDown } from "lucide-react";
+import getMCQ from "../API_Connection";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const TextExtractor = () => {
-
   const navigate = useNavigate();
 
-  const [extractedText, setExtractedText] = useState('');
+  const [extractedText, setExtractedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [fileName, setFileName] = useState('');
-  const [error, setError] = useState('');
+  const [fileName, setFileName] = useState("");
+  const [error, setError] = useState("");
   const [questions, setQuestions] = useState(null);
 
   const generateMCQ = async (text) => {
@@ -20,17 +19,18 @@ const TextExtractor = () => {
     const mcq = JSON.parse(res);
     console.log(mcq);
     setQuestions(mcq);
-  }
+  };
 
   const extractTextFromPDF = async (file) => {
     try {
       setIsLoading(true);
-      setError('');
+      setError("");
 
       // Load PDF.js from CDN
       if (!window.pdfjsLib) {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+        const script = document.createElement("script");
+        script.src =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
         document.head.appendChild(script);
 
         await new Promise((resolve, reject) => {
@@ -39,27 +39,28 @@ const TextExtractor = () => {
         });
 
         // Set worker path
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
       }
 
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await window.pdfjsLib.getDocument(arrayBuffer).promise;
 
-      let fullText = '';
+      let fullText = "";
 
       // Extract text from each page
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
-        const pageText = textContent.items.map(item => item.str).join(' ');
+        const pageText = textContent.items.map((item) => item.str).join(" ");
         fullText += `--- Page ${i} ---\n${pageText}\n\n`;
       }
 
       setExtractedText(fullText);
       setFileName(file.name);
       setIsLoading(false);
-      toast.success('Text Extracted from PDF');
-      window.scrollTo({ top: 800, behavior: 'smooth' })
+      toast.success("Text Extracted from PDF");
+      window.scrollTo({ top: 800, behavior: "smooth" });
 
       const id = toast.loading("Uploading file...");
 
@@ -69,31 +70,30 @@ const TextExtractor = () => {
         render: "Upload complete ✅",
         type: "success",
         isLoading: false,
-        autoClose: 3000
+        autoClose: 3000,
       });
-
     } catch (err) {
       setError(`Error extracting text: ${err.message}`);
-      console.error('PDF extraction error:', err);
+      console.error("PDF extraction error:", err);
     }
   };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
+    if (file && file.type === "application/pdf") {
       extractTextFromPDF(file);
     } else {
-      setError('Please select a valid PDF file');
+      setError("Please select a valid PDF file");
     }
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    if (file && file.type === 'application/pdf') {
+    if (file && file.type === "application/pdf") {
       extractTextFromPDF(file);
     } else {
-      setError('Please drop a valid PDF file');
+      setError("Please drop a valid PDF file");
     }
   };
 
@@ -104,19 +104,19 @@ const TextExtractor = () => {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(extractedText);
-      toast.info("Text Copied To Clipboard! 🎉")
+      toast.info("Text Copied To Clipboard! 🎉");
     } catch (err) {
-      console.error('Failed to copy text:', err);
-      toast.error("Unable to Copy Text to Clipboard!")
+      console.error("Failed to copy text:", err);
+      toast.error("Unable to Copy Text to Clipboard!");
     }
   };
 
   const downloadText = () => {
-    const blob = new Blob([extractedText], { type: 'text/plain' });
+    const blob = new Blob([extractedText], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `${fileName.replace('.pdf', '')}_extracted_text.txt`;
+    a.download = `${fileName.replace(".pdf", "")}_extracted_text.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -124,46 +124,99 @@ const TextExtractor = () => {
   };
 
   return (
-    <div className="min-h-screen text-text-primary p-5 sm:p-6">
+    <div className="pt-30 p-5 text-primary">
       <ToastContainer />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-3xl space-y-10 mx-auto">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 hover:scale-105 rounded-full mb-4">
             <FileText className="w-8 h-8 text-gray-100" />
           </div>
           <h1 className="text-4xl font-bold mb-2">AI MCQ's Generator</h1>
-          <p className="text-lg text-tertiary">Upload a PDF file and extract all its text content and generate MCQ Question with AI</p>
+          <p className="text-lg text-tertiary">
+            Upload a PDF file and extract all its text content and generate MCQ
+            Question with AI
+          </p>
         </div>
 
-        {/* Upload Area */}
-        <div className="bg-bg-muted rounded-xl border-1 border-border p-6 sm:p-8 mb-6">
-          <div
-            className="border-2 border-dashed border-blue-600 rounded-lg p-8 text-center hover:scale-98 transition-all"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-          >
-            <Upload className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-            <div className="mb-4">
-              <p className="text-lg font-semibold text-text-primary mb-2 hidden sm:block">
-                Drop your PDF file here or click to browse
-              </p>
-              <p className="text-sm text-tertiary hidden sm:block">Supports PDF files up to 50MB</p>
+        <div className="inline-flex flex-col gap-5 bg-light p-8 w-full border border-border rounded-xl">
+          <div className="w-full mb-5">
+            <h3 className="font-semibold mb-2">Upload PDF Document</h3>
+            <div className="bg-base flex flex-col items-center gap-5 p-5 border-3 border-blue-500 border-dashed rounded-lg ">
+              <Upload className="w-15 h-15" />
+              <p>Drag & Drop One</p>
+              <input type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" id="pdf" />
+              <label htmlFor="pdf" className="bg-blue-600 py-3 px-5 rounded-md text-white">Choose a PDF File</label>
             </div>
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={handleFileUpload}
-              className="hidden"
-              id="pdf-upload"
-            />
-            <label
-              htmlFor="pdf-upload"
-              className="inline-flex items-center text-sm px-4 text-nowrap py-3 bg-blue-600 text-white font-semibold rounded-lg hover:scale-110 cursor-pointer transition-all"
-            >
-              <Upload className="w-5 h-5 mr-2" />
-              Choose PDF File
-            </label>
           </div>
+          {/* MCQ Count */}
+          <label className="w-8/10 relative">
+            <h3 className="font-semibold mb-2">Number of MCQ's to Generate</h3>
+            <select
+              name="mcqNumber"
+              id="mcqNumber"
+              className="appearance-none bg-base p-3 pr-10 rounded-lg border border-text w-full
+                     focus:outline-none focus:ring-0 focus:border-text" >
+              <option className="hidden" value="select">Select the number of MCQ's to Generate</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
+          </label>
+
+          {/* Difficulty */}
+          <label className="w-8/10 relative">
+            <h3 className="font-semibold mb-2">Difficulty Level</h3>
+            <select
+              name="difficulty"
+              id="difficulty"
+              className="appearance-none bg-base p-3 w-full rounded-lg border border-text
+                     focus:outline-none focus:ring-0 focus:border-text"
+            >
+              <option className="hidden" value="select">Difficulty Level:</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
+          </label>
+          {/* Wording */}
+          <label className="relative w-8/10">
+            <h3 className="font-semibold mb-2">Vocabulary Level</h3>
+            <select
+              name="difficulty"
+              id="difficulty"
+              className="appearance-none bg-base p-3 rounded-lg border border-text w-full
+                     focus:outline-none focus:ring-0 focus:border-text"
+            >
+              <option className="hidden" value="select">Vocabulary Level:</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
+          </label>
+          {/* Options */}
+          <label className="relative w-8/10">
+            <h3 className="font-semibold mb-2">Number of Options</h3>
+            <select
+              name="difficulty"
+              id="difficulty"
+              className="appearance-none bg-base p-3 w-full rounded-lg border border-text
+                     focus:outline-none focus:ring-0 focus:border-text"
+            >
+              <option className="hidden" value="select">Select Number of Options...</option>
+              <option value="easy">2</option>
+              <option value="medium">3</option>
+              <option value="hard">4</option>
+              <option value="hard">5</option>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
+          </label>
         </div>
 
         {/* Error Message */}
@@ -196,7 +249,7 @@ const TextExtractor = () => {
                     className="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
                   >
                     <Copy className="w-4 h-4 mr-2" />
-                    <span className='text-nowrap'>Copy Text</span>
+                    <span className="text-nowrap">Copy Text</span>
                   </button>
                   <button
                     onClick={downloadText}
@@ -217,9 +270,21 @@ const TextExtractor = () => {
               <div className="flex justify-between mt-4 text-sm text-gray-500">
                 <div>
                   <p>Characters: {extractedText.length}</p>
-                  <p>Words: {extractedText.split(/\s+/).filter(word => word.length > 0).length}</p>
+                  <p>
+                    Words:{" "}
+                    {
+                      extractedText
+                        .split(/\s+/)
+                        .filter((word) => word.length > 0).length
+                    }
+                  </p>
                 </div>
-                <button onClick={() => navigate('/quiz', { state: { questions } })} className='bg-blue-400 p-3 text-white font-semibold rounded-lg'>Generate MCQ's</button>
+                <button
+                  onClick={() => navigate("/quiz", { state: { questions } })}
+                  className="bg-blue-400 p-3 text-white font-semibold rounded-lg"
+                >
+                  Generate MCQ's
+                </button>
               </div>
             </div>
           </>
@@ -227,18 +292,25 @@ const TextExtractor = () => {
 
         {/* Instructions */}
         {!extractedText && !isLoading && (
-          <div className="bg-bg-muted border-1 border-border rounded-xl p-4 sm:p-6">
-            <h3 className="text-lg font-semibold text-text-primary mb-3">How to use:</h3>
-            <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base text-text-primary">
-              <li>Click "Choose PDF File" or drag and drop a PDF file into the upload area</li>
+          <div className="bg-light border-1 border-border rounded-xl p-4 sm:p-6">
+            <h3 className="text-lg font-semibold text-primary mb-3">
+              How to use:
+            </h3>
+            <ol className="list-decimal list-inside space-y-2 text-sm sm:text-lg text-primary">
+              <li>
+                Click "Choose PDF File" or drag and drop a PDF file into the
+                upload area
+              </li>
               <li>Wait for the text extraction process to complete</li>
               <li>Review the extracted text in the display area</li>
               <li>Copy the text to clipboard or download it as a text file</li>
             </ol>
 
             <div className="mt-6 p-3 bg-tertiary/10 border border-text/70 rounded-lg">
-              <p className="text-xs sm:text-sm text-text-primary">
-                <strong>Note:</strong> This tool works best with text-based PDFs. Scanned documents or image-based PDFs may not extract properly and would require OCR processing.
+              <p className="text-xs sm:text-sm text-primary">
+                <strong>Note:</strong> This tool works best with text-based
+                PDFs. Scanned documents or image-based PDFs may not extract
+                properly and would require OCR processing.
               </p>
             </div>
           </div>
@@ -248,4 +320,4 @@ const TextExtractor = () => {
   );
 };
 
-export default TextExtractor; 
+export default TextExtractor;

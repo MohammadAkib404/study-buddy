@@ -9,7 +9,7 @@ import TextExtractor from './Pages/Text_Extractor'
 
 function App() {
   return (
-    <div className='bg-bg-default'>
+    <div className=''>
       <BrowserRouter >
         <Header />
         <Routes>

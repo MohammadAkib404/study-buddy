@@ -1,29 +1,34 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+@custom-variant base (&:where([data-theme='base'], [data-theme='base'] *));
 
 @theme {
-  --color-bg-default: hsl(0 0% 98%); /* Main background */
-  --color-bg-muted: hsl(0 0% 97%); /* bg-muted / subtle background */
-  --color-border: hsl(0 0% 89%); /* Border/dividers */
+  --color-base: hsl(0 0% 100%); /* Main background */
+  --color-compliment: hsl();
+  --color-layer: hsl(0 0% 95%); /* light / subtle background */
 
-  --color-text-primary: hsl(0 0% 15%); /* Main text + headings */
-  --color-text-secondary: hsl(0 0% 40%); /* Muted text */
+  --color-border: hsl(214, 15%, 82%); /* Border/dividers */
 
-  --color-brand: hsl(250 30% 25%); /* Purple brand color */
-  --color-accent: hsl(140 60% 50%); /* Green accent color */
+  --color-primary: hsl(0 0% 15%); /* Main text + headings */
+  --color-muted: hsl(0 0% 40%); /* Muted text */
+
+  --color-brand: hsl(208, 93%, 47%); /* Purple brand color */
+  --color-accent: hsl(38, 92%, 50%); /* Green accent color */
 }
 
 @layer theme {
   [data-theme="dark"] {
-    --color-bg-default: hsl(216 28% 7%);
-    --color-bg-muted: hsl(216 19% 11%);
+
+    --color-base: hsl(216 28% 7%);
+    --color-compliment: hsl(225, 29%, 10%);
+    --color-layer: hsl(216 19% 11%);
+
     --color-border: hsl(218 7% 35%);
 
-    --color-text-primary: hsl(212 30% 90%);
-    --color-text-secondary: hsl(0 0% 60%);
+    --color-primary: hsl(212 30% 90%);
+    --color-muted: hsl(0 0% 60%);
 
-    --color-brand: hsl(0 0% 90%);
-    --color-accent: hsl(140 60% 50%);
+    --color-brand: hsl(208 93% 47%);
+    --color-accent: hsl(144, 100%, 39%);
   }
 }
