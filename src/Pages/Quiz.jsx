@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { BookOpen } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 function Quiz() {

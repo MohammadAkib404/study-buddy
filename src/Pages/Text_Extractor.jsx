@@ -15,10 +15,17 @@ const TextExtractor = () => {
 
   const generateMCQ = async (text) => {
     const res = await getMCQ(text);
+    console.log('hi ')
     console.log(res);
-    const mcq = JSON.parse(res);
-    console.log(mcq);
+    let mcq;
+    try {
+      mcq = typeof res === 'string' ? JSON.parse(res) : res;
+    } catch (error) {
+      console.error('Invalid Text was not Json', error)
+    }
     setQuestions(mcq);
+    console.log(mcq);
+    console.log(res);
   };
 
   const extractTextFromPDF = async (file) => {
@@ -56,7 +63,7 @@ const TextExtractor = () => {
         fullText += `--- Page ${i} ---\n${pageText}\n\n`;
       }
 
-      setExtractedText(fullText);
+      setExtractedText(fullText.slice(0, 30000));
       setFileName(file.name);
       setIsLoading(false);
       toast.success("Text Extracted from PDF");
@@ -144,7 +151,7 @@ const TextExtractor = () => {
             <div className="bg-base flex flex-col items-center gap-5 p-5 border-3 border-blue-500 border-dashed rounded-lg ">
               <Upload className="w-15 h-15" />
               <p>Drag & Drop One</p>
-              <input type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" id="pdf" />
+              <input type="file" accept=".pdf" onChange={handleFileUpload} onDragOver={handleDragOver} onDrop={handleDrop} className="hidden" id="pdf" />
               <label htmlFor="pdf" className="bg-blue-600 py-3 px-5 rounded-md text-white">Choose a PDF File</label>
             </div>
           </div>
