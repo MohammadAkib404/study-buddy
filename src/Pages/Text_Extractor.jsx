@@ -3,9 +3,35 @@ import { Upload, FileText, Download, Copy, AlertCircle, Plus, ChevronDown } from
 import getMCQ from "../API_Connection";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import Select from "../Components/Select";
 
 const TextExtractor = () => {
+
   const navigate = useNavigate();
+
+  const selectData = [
+    {
+       question: 'Select the number of MCQs to Generate',
+       options: [5, 10, 15, 20, 30, 50],
+    },
+    {
+       question: 'Select number of Options in the MCQ',
+       options: [2, 3, 4, 5]
+       
+    },
+    {
+       question: 'Select Vocabulary Level',
+       options: ['Basic', 'Proficient', 'Expert', 'Elite'],
+       multiselect: true,
+       
+    },
+    {
+       question: 'Select Difficulty Level',
+       options: ['Beginner', 'Intermediate', 'Advanced', 'Elite'],
+       multiselect: true,
+       
+    },
+  ]
 
   const [extractedText, setExtractedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -139,13 +165,13 @@ const TextExtractor = () => {
             <FileText className="w-8 h-8 text-gray-100" />
           </div>
           <h1 className="text-4xl font-bold mb-2">AI MCQ's Generator</h1>
-          <p className="text-lg text-tertiary">
+          <p className="text-lg text-muted">
             Upload a PDF file and extract all its text content and generate MCQ
             Question with AI
           </p>
         </div>
 
-        <div className="inline-flex flex-col gap-5 bg-light p-8 w-full border border-border rounded-xl">
+        <div className="inline-flex flex-col gap bg-light p-8 w-full border border-border rounded-xl">
           <div className="w-full mb-5">
             <h3 className="font-semibold mb-2">Upload PDF Document</h3>
             <div className="bg-base flex flex-col items-center gap-5 p-5 border-3 border-blue-500 border-dashed rounded-lg ">
@@ -155,75 +181,19 @@ const TextExtractor = () => {
               <label htmlFor="pdf" className="bg-blue-600 py-3 px-5 rounded-md text-white">Choose a PDF File</label>
             </div>
           </div>
-          {/* MCQ Count */}
-          <label className="w-8/10 relative">
-            <h3 className="font-semibold mb-2">Number of MCQ's to Generate</h3>
-            <select
-              name="mcqNumber"
-              id="mcqNumber"
-              className="appearance-none bg-base p-3 pr-10 rounded-lg border border-text w-full
-                     focus:outline-none focus:ring-0 focus:border-text" >
-              <option className="hidden" value="select">Select the number of MCQ's to Generate</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-              <option value="25">25</option>
-              <option value="30">30</option>
-              <option value="50">50</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
-          </label>
 
-          {/* Difficulty */}
-          <label className="w-8/10 relative">
-            <h3 className="font-semibold mb-2">Difficulty Level</h3>
-            <select
-              name="difficulty"
-              id="difficulty"
-              className="appearance-none bg-base p-3 w-full rounded-lg border border-text
-                     focus:outline-none focus:ring-0 focus:border-text"
-            >
-              <option className="hidden" value="select">Difficulty Level:</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
-          </label>
-          {/* Wording */}
-          <label className="relative w-8/10">
-            <h3 className="font-semibold mb-2">Vocabulary Level</h3>
-            <select
-              name="difficulty"
-              id="difficulty"
-              className="appearance-none bg-base p-3 rounded-lg border border-text w-full
-                     focus:outline-none focus:ring-0 focus:border-text"
-            >
-              <option className="hidden" value="select">Vocabulary Level:</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
-          </label>
-          {/* Options */}
-          <label className="relative w-8/10">
-            <h3 className="font-semibold mb-2">Number of Options</h3>
-            <select
-              name="difficulty"
-              id="difficulty"
-              className="appearance-none bg-base p-3 w-full rounded-lg border border-text
-                     focus:outline-none focus:ring-0 focus:border-text"
-            >
-              <option className="hidden" value="select">Select Number of Options...</option>
-              <option value="easy">2</option>
-              <option value="medium">3</option>
-              <option value="hard">4</option>
-              <option value="hard">5</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 bottom-1 -translate-y-1/2 opacity-80" />
-          </label>
+          <div className="my-6 p-3 bg-brand/10 border border-text/70 rounded-lg">
+            <p className="text-xs sm:text-sm text-primary">
+              <strong>Note:</strong> Selecting Multiple Options will generate a mix from the options selected.
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            {selectData.map((data, i) => (
+              <Select key={i} question={data.question} options={data.options} multiselect={data.multiselect} />
+            ))}
+          </div>
+
         </div>
 
         {/* Error Message */}
@@ -313,7 +283,7 @@ const TextExtractor = () => {
               <li>Copy the text to clipboard or download it as a text file</li>
             </ol>
 
-            <div className="mt-6 p-3 bg-tertiary/10 border border-text/70 rounded-lg">
+            <div className="mt-6 p-3 bg-brand/10 border border-text/70 rounded-lg">
               <p className="text-xs sm:text-sm text-primary">
                 <strong>Note:</strong> This tool works best with text-based
                 PDFs. Scanned documents or image-based PDFs may not extract
