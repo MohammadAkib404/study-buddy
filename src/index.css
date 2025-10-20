@@ -7,13 +7,14 @@
   --color-compliment: hsl();
   --color-layer: hsl(0 0% 95%); /* light / subtle background */
 
-  --color-border: hsl(214, 15%, 82%); /* Border/dividers */
+  --color-border: hsl(240, 5%, 84%); /* Border/dividers */
 
   --color-primary: hsl(0 0% 15%); /* Main text + headings */
   --color-muted: hsl(0 0% 40%); /* Muted text */
 
   --color-brand: hsl(208, 93%, 47%); /* Purple brand color */
-  --color-accent: hsl(38, 92%, 50%); /* Green accent color */
+
+  --color-hover: hsl(0 0% 95%);
 }
 
 @layer theme {
@@ -29,6 +30,7 @@
     --color-muted: hsl(0 0% 60%);
 
     --color-brand: hsl(208 93% 47%);
-    --color-accent: hsl(144, 100%, 39%);
+
+    --color-hover: hsl(0 0% 25%);
   }
 }
