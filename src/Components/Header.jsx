@@ -9,7 +9,7 @@ function Header() {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth > 640) {
+            if (window.innerWidth >= 640) {
                 setMenu(true);
             } else {
                 setMenu(false);
