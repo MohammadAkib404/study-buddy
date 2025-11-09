@@ -36,6 +36,19 @@ app.get("/api/names", async (req, res) => {
   }
 });
 
+app.get('/api/mcq', async (req, res) => {
+  const {title} = req.query;
+  try {
+    const quiz = await Quiz.find({
+      title: title,
+    }, {mcqs: 1, _id: 0});
+    const questions = quiz[0].mcqs;
+    res.send(questions);
+  } catch (error) {
+    res.status(500).json({error: "Failed to fetch questions"});
+  }
+})
+
 app.get("/", (req, res) => {
   res.send("Backend is running successfully");
 });
