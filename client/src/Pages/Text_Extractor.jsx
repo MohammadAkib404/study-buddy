@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Upload, FileText, Download, Copy, AlertCircle, Plus, ChevronDown, ChevronRight, Brain, Sparkles } from "lucide-react";
-import getMCQ from "../API_Connection";
+import { getMCQ, saveMCQ } from "../API_Connection";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Select from "../Components/Select";
@@ -52,22 +52,22 @@ const TextExtractor = () => {
     vocabularyLevel: '',
     difficultyLevel: '',
   });
-  
+
 
   const generateMCQ = async (text) => {
     setQuestions('Generating');
-    
+
     const id = toast.loading("Generating MCQ's");
     const res = await getMCQ(text, variator);
-    let mcq;
+    console.log(res);
+    let parsedRes;
     try {
-      mcq = JSON.parse(res);
+      parsedRes = JSON.parse(res);
     } catch (error) {
       console.error('Invalid Text was not Json', error)
     }
-    setQuestions(mcq);
-    console.log(mcq);
-    console.log(res);
+    setQuestions(parsedRes.questions);
+    saveMCQ(parsedRes.title, parsedRes.questions)
 
     toast.update(id, {
       render: "MCQ Generation complete ✅",
@@ -197,7 +197,7 @@ const TextExtractor = () => {
     )
   }
 
-  function TextArea(){
+  function TextArea() {
     return (
       <div className="w-full">
         <h3 className="mb-3 font-semibold">Text Input</h3>
@@ -330,7 +330,7 @@ const TextExtractor = () => {
         <PDFUpload />
 
         {!extractedText && !isLoading &&
-          <TextArea/>
+          <TextArea />
         }
 
         {isLoading && <PDFLoadingState />}
@@ -363,7 +363,7 @@ const TextExtractor = () => {
       </div>
 
       {questions && <MCQLoading questions={questions} />}
-      
+
       <Instructions />
 
     </div>
