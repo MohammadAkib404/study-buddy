@@ -16,6 +16,15 @@ function MCQSidebar() {
         })();
     }, [])
 
+    const navigate = useNavigate();
+
+    async function loadMCQ(title) {
+        const res = await axios.get(`http://localhost:5000/api/mcq?title=${title}`);
+        console.log(res.data);
+        const questions = res.data;
+        navigate('/quiz', { state: questions })
+    }
+
     return (
         <>
             <div className={`bg-base p-5 fixed top-0 left-0 pt-20 border-r border-border  h-screen transition-all ease-out duration-400 ${sidebarOpen ? 'w-64 shadow-xl' : 'w-15 bg-transparent border-none shadow-none'}`}>
