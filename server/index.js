@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import quizModel from "./models/quizModel.js";
+import Quiz from "./models/quizModel.js";
 
 dotenv.config();
 
@@ -18,11 +18,21 @@ mongoose
 app.post("/api/mcqs", async (req, res) => {
   try {
     const { title, mcqs } = req.body;
-    const quiz = new quizModel({ title, mcqs });
+    const quiz = new Quiz({ title, mcqs });
     await quiz.save();
     res.status(201).json({ message: "MCQ saved successfully!" });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/names", async (req, res) => {
+  try {
+    const quizzes = await Quiz.find({}, { title: 1, _id: 0 });
+    const titles = quizzes.map((el) => el.title);
+    res.json(titles);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch names" });
   }
 });
 
