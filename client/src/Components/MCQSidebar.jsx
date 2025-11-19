@@ -13,14 +13,14 @@ function MCQSidebar() {
 
     useEffect(() => {
         (async () => {
-            const res = await axios.get(`http://localhost:5000/api/names`);
+            const res = await axios.get(`http://localhost:5000/api/quizzes/titles`);
             console.log(res.data);
             setTitles(res.data);
         })();
     }, [])
 
     async function loadMCQ(title) {
-        const res = await axios.get(`http://localhost:5000/api/mcq?title=${title}`);
+        const res = await axios.get(`http://localhost:5000/api/quizzes/quiz?title=${title}`);
         console.log(res.data);
         const questions = res.data;
         navigate('/quiz', { state: questions })

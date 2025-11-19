@@ -1,10 +1,10 @@
 import express from "express";
-import { getQuiz, getTitles, saveQuiz } from "../controllers/quizController";
+import { getQuiz, getTitles, saveQuiz } from "../controllers/quizController.js";
 
 const quizRouter = express.Router();
 
 quizRouter.post('/save', saveQuiz);
-quizRouter.post('/titles', getTitles);
-quizRouter.post('/quiz', getQuiz);
+quizRouter.get('/titles', getTitles);
+quizRouter.get('/quiz', getQuiz);
 
 export default quizRouter;

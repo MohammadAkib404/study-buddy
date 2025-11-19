@@ -76,7 +76,7 @@ const getMCQ = async (text, variator) => {
 
 async function saveMCQ(title, mcqs) {
   try {
-    const res = await axios.post("http://localhost:5000/api/mcqs", {
+    const res = await axios.post("http://localhost:5000/api/quizzes/save", {
       title: title,
       mcqs: mcqs,
     });
