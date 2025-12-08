@@ -1,6 +1,8 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { EMAIL_VERIFY_TEMPLATE } from "../config/emailTemplates.js";
+import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -103,5 +105,37 @@ export const logout = async (req, res) => {
 
   } catch (error) {
     return res.json({success: false, message: `Failed to log out: ${error.message}`})
+  }
+}
+
+export const sendVerifyOtp = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const user = await userModel.findById(userId);
+
+    if(user.isAccountVerified){
+      return res.json({success: true, message: "Account already verified"});
+    }
+
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
+
+    user.verifyOtp = otp;
+    user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+
+    await user.save();
+
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: user.email,
+      subject: "Account Verification OTP",
+      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email),
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.json({succes: true, message: "Verification OTP Sent on Email"})
+  } catch (error) {
+    res.json({success: false, message: `Failed to send verify-otp: ${error.message}`});
   }
 }
