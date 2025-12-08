@@ -173,3 +173,11 @@ export const verifyEmail = async (req, res) => {
     res.json({success: false, message: `Failed to verify Account: ${error.message}`});
   }
 }
+
+export const isAuthenticated = async (req, res) => {
+  try {
+    res.json({success: true})
+  } catch (error) {
+    res.json({success: false, message: error.message});
+  }
+}
