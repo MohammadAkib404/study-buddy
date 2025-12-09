@@ -1,0 +1,7 @@
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
+
+const API = "http://localhost:5000/api/auth";
+
+export const register = (data) => axios.post(`${API}/register`, data);
