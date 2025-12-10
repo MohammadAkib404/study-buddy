@@ -1,15 +1,15 @@
 import React, { useContext } from 'react'
 import { useState } from 'react'
-import { register } from '../Api/auth'
 import AuthForm from '../Components/AuthForm'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
+import axios from 'axios'
 
 export default function Register() {
 
   const navigate = useNavigate();
 
-  const {setIsLoggedIn, getUserData} = useContext(AppContext);
+  const {backendUrl, setIsLoggedIn, getUserData} = useContext(AppContext);
 
   const [form, setForm] = useState({
     name: "",
@@ -17,7 +17,7 @@ export default function Register() {
     password: "",
   })
 
-  const handleSubmit = async (e) => {
+  const register = async (e) => {
     e.preventDefault();
 
     const {name, email, password} = form;
@@ -26,9 +26,10 @@ export default function Register() {
       return console.log('Missing Detaills');
     }
 
-    try {
-    const {data} = await register({name, email, password});
+    console.log(form);
 
+    try {
+    const {data} = await axios.post(`${backendUrl}/register`, {name, email, password});
     if(data.success){
       setIsLoggedIn(true);
       getUserData();
@@ -39,6 +40,7 @@ export default function Register() {
       
     } catch (error) {
       console.log(`Error during Authentication ${error.message}`);
+      toast.error(error.message);
     }
 
   }
@@ -55,7 +57,7 @@ export default function Register() {
       mode="Register"
       form={form}
       onChange={handleChange}
-      onSubmit={handleSubmit}
+      onSubmit={register}
     />
   )
 }

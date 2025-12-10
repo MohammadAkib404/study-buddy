@@ -39,8 +39,9 @@ export const AppContextProvider = (props) => {
     }, [])
 
     const value = {
+        backendUrl,
         isLoggedIn, setIsLoggedIn,
-        userData, 
+        userData, setUserData, 
         getUserData,
     }
 
