@@ -1,8 +1,11 @@
 import React, { use, useEffect, useState } from 'react'
 import { Aperture, Menu, Sun, MoonStar, Thermometer } from 'lucide-react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import Profile from './Profile';
 
 function Header() {
+
+    const navigate = useNavigate();
 
     const [menu, setMenu] = useState(false);
     const [darkTheme, setDarkTheme] = useState(false);
@@ -40,7 +43,7 @@ function Header() {
                 <span className='w-max'>Smart Study</span>
             </h1>
 
-            <div className={`bg-base sm:border-none border-2 border-border font-semibold absolute top-14 transition-all duration-300 ease-in-out ${menu ? 'h-auto opacity-100' : 'h-0 opacity-0 pointer-events-none'} left-0 w-screen sm:static p-6 sm:p-0 flex items-start gap-y-4 flex-col sm:flex-row sm:items-center sm:justify-end space-x-3 text-sm lg:text-[16px] list-none`}>
+            <div className={`bg-base sm:border-none border-2 border-border font-semibold absolute top-14 transition-all duration-300 ease-in-out ${menu ? 'h-auto opacity-100' : 'h-0 opacity-0 pointer-events-none'} left-0 w-screen sm:static p-6 sm:p-0 flex items-start gap-y-4 flex-col sm:flex-row sm:items-center sm:justify-end space-x-4 text-sm lg:text-[16px] list-none`}>
                 <NavLink className='group' to='/'>
                     <span className='relative p-1'>Home
                         <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-brand group-hover:w-full transition-all duration-300'></span>
@@ -56,12 +59,11 @@ function Header() {
                         <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-brand group-hover:w-full transition-all duration-300'></span>
                     </span>
                 </NavLink>
-                <button className='bg-brand w-1/3 sm:w-max px-3 py-1 rounded-md text-white font-semibold'>Try Now</button>
-                <button className='ml-1 shadow-md shadow-gray-500 sm:static absolute p-[6px] rounded-xl border border-border  top-4 right-7' onClick={() => setDarkTheme(!darkTheme)}>
+            </div>
+                <Profile/>
+                <button className='ml-3 shadow-md shadow-gray-500 sm:static absolute p-[6px] rounded-xl border border-border  top-4 right-7' onClick={() => setDarkTheme(!darkTheme)}>
                     {darkTheme ? <Sun className='text-brand' /> : <MoonStar className='text-brand' />}
                 </button>
-
-            </div>
 
             <div className='flex items-center ml-auto sm:hidden' onClick={() => setMenu(!menu)}>
                 <Menu />
