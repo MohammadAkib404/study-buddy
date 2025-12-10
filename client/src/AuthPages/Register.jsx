@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import { register } from '../Api/auth'
 import AuthForm from '../Components/AuthForm'
+import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../context/AppContext'
 
 export default function Register() {
+
+  const navigate = useNavigate();
+
+  const {setIsLoggedIn, getUserData} = useContext(AppContext);
 
   const [form, setForm] = useState({
     name: "",
@@ -13,13 +19,28 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+
     const {name, email, password} = form;
-    if(!form.name || !form.email || !form.password){
+
+    if(!name || !email || !password){
       return console.log('Missing Detaills');
     }
-    const res = await register({name, email, password});
-    console.log(res);
+
+    try {
+    const {data} = await register({name, email, password});
+
+    if(data.success){
+      setIsLoggedIn(true);
+      getUserData();
+      navigate("/")
+    }else{
+      toast.error(data.message);
+    }
+      
+    } catch (error) {
+      console.log(`Error during Authentication ${error.message}`);
+    }
+
   }
 
   const handleChange = (e) => {
@@ -27,7 +48,6 @@ export default function Register() {
         ...prev,
         [e.target.name]: e.target.value
       }))
-      console.log(form);
   }
 
   return (

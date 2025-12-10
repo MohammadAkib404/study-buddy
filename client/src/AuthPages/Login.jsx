@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { login } from "../Api/auth";
 import AuthForm from "../Components/AuthForm";
+import { AppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+
+  const navigate = useNavigate();
+
+  const {setIsLoggedIn, getUserData} = useContext(AppContext);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -11,13 +18,24 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
     const { email, password } = form;
-    if (!form.email || !form.password) {
+    if (!email || !password) {
       return console.log("Missing Detaills");
     }
-    const res = await login({ email, password });
-    console.log(res);
+
+    try {
+      const { data } = await login({ email, password });
+
+      if (data.success) {
+        setIsLoggedIn(true);
+        getUserData();
+        navigate("/");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(`Error during Authentication ${error.message}`);
+    }
   };
 
   const handleChange = (e) => {
