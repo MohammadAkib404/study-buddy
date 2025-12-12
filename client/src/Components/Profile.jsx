@@ -23,12 +23,18 @@ export default function Profile() {
     }
   };
 
+  const verifyEmail = async () => {
+    navigate("/verify-email");
+    const {data} = await axios.post(`${backendUrl}/send-verify-otp`);
+    console.log(data);
+  }
+
   return isLoggedIn ? (
     <div className="relative flex justify-center items-center bg-teal-500 rounded-full size-10 text-white font-semibold mx-3 group">
       <span>{userData ? userData.name[0].toUpperCase() : "No"}</span>
       <div className="flex-col items-start absolute top-10 right-5 p-3 w-max bg-red-500 space-y-1 hidden group-hover:flex">
         <button onClick={logout}>Logout</button>
-        <button onClick={logout}>Verify Email</button>
+        <button onClick={verifyEmail}>Verify Email</button>
       </div>
     </div>
   ) : (

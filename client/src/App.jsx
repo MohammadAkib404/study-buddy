@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import TextExtractor from './Pages/Text_Extractor'
 import Register from './AuthPages/Register'
 import Login from './AuthPages/Login'
+import VerifyEmail from './AuthPages/VerifyEmail'
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/verify-email' element={<VerifyEmail />} />
         </Routes>
         <Footer />
       </BrowserRouter>
