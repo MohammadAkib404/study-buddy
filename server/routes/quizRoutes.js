@@ -5,7 +5,7 @@ import userAuth from "../middlewares/userAuth.js";
 const quizRouter = express.Router();
 
 quizRouter.post('/save', userAuth, saveQuiz);
-quizRouter.get('/titles', getTitles);
-quizRouter.get('/quiz', getQuiz);
+quizRouter.get('/titles', userAuth, getTitles);
+quizRouter.get('/quiz', userAuth, getQuiz);
 
 export default quizRouter;

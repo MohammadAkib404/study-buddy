@@ -13,7 +13,7 @@ export const saveQuiz = async (req, res) => {
 
 export const getTitles = async (req, res) => {
   try {
-    const quizzes = await quizModel.find({}, { title: 1, _id: 0 });
+    const quizzes = await quizModel.find({userId: req.userId}, { title: 1, _id: 0 });
     const titles = quizzes.map((el) => el.title);
     res.json(titles);
   } catch (error) {
@@ -24,7 +24,7 @@ export const getTitles = async (req, res) => {
 export const getQuiz = async (req, res) => {
   const { title } = req.query;
   try {
-    const quiz = await quizModel.find({ title: title }, { mcqs: 1, _id: 0 });
+    const quiz = await quizModel.find({ userId: req.userId, title: title }, { mcqs: 1, _id: 0 });
     const questions = quiz[0].mcqs;
     res.send(questions);
   } catch (error) {
