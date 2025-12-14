@@ -295,6 +295,12 @@ export const resetPassword = async (req, res) => {
 
     await user.save();
 
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    });
+
     res.json({ success: true, message: "Password Changed!" });
   } catch (error) {
     res.json({
