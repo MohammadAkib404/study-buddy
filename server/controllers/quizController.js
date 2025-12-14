@@ -3,7 +3,7 @@ import quizModel from "../models/quizModel.js";
 export const saveQuiz = async (req, res) => {
   try {
     const { title, mcqs } = req.body;
-    const quiz = new quizModel({ title, mcqs });
+    const quiz = new quizModel({ userId: req.userId, title, mcqs });
     await quiz.save();
     res.status(201).json({ message: "MCQ saved successfully!" });
   } catch (err) {
