@@ -34,7 +34,7 @@ export default function Profile() {
       <span>{userData ? userData.name[0].toUpperCase() : "No"}</span>
       <div className="flex-col items-start absolute top-10 right-5 p-3 w-max bg-red-500 space-y-1 hidden group-hover:flex">
         <button onClick={logout}>Logout</button>
-        <button onClick={verifyEmail}>Verify Email</button>
+        {!userData.isAccountVerified && <button onClick={verifyEmail}>Verify Email</button>}
       </div>
     </div>
   ) : (
