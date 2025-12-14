@@ -8,12 +8,15 @@ import TextExtractor from './Pages/Text_Extractor'
 import Register from './AuthPages/Register'
 import Login from './AuthPages/Login'
 import VerifyEmail from './AuthPages/VerifyEmail'
+import ResetPassword from './AuthPages/ResetPassword'
+import { ToastContainer } from 'react-toastify'
 
 
 function App() {
   return (
     <div className=''>
       <BrowserRouter >
+       <ToastContainer/>
         <Header />
         <Routes>
           <Route path='/' element={<Home />} />
@@ -22,6 +25,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/verify-email' element={<VerifyEmail />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
         </Routes>
         <Footer />
       </BrowserRouter>

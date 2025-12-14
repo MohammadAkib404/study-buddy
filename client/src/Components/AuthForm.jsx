@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -44,9 +45,11 @@ export default function AuthForm({ mode, form, onChange, onSubmit }) {
           className="border border-border px-5 py-3 rounded-lg"
         />
 
+        <strong onClick={() => navigate("/reset-password")} className="text-brand opacity-80">Forget Password</strong>
+
         <button
           onClick={onSubmit}
-          className="bg-brand text-xl text-base font-semibold p-3 rounded-lg mt-10"
+          className="bg-brand text-xl text-base font-semibold p-3 rounded-lg"
         >
           {isRegister? "Sign Up" : "Log In"}
         </button>
