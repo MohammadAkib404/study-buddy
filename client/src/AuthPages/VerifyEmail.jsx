@@ -13,7 +13,7 @@ export default function VerifyEmail() {
   const verifyEmail = async () => {
     const otp = input.join("");
     console.log(otp);
-    const {data} = await axios.post(`${backendUrl}/verify-account`, {otp});
+    const {data} = await axios.post(`${backendUrl}/auth/verify-account`, {otp});
     data.success? toast.info(data.message) : toast.error(data.message);
     console.log(data);
   }

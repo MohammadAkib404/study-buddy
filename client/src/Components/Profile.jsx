@@ -13,7 +13,7 @@ export default function Profile() {
 
   const logout = async () => {
     try {
-      const { data } = await axios.post(`${backendUrl}/logout`);
+      const { data } = await axios.post(`${backendUrl}/auth/logout`);
       data.success && setIsLoggedIn(false);
       data.success && setUserData(false);
       navigate("/");
@@ -25,7 +25,7 @@ export default function Profile() {
 
   const verifyEmail = async () => {
     navigate("/verify-email");
-    const {data} = await axios.post(`${backendUrl}/send-verify-otp`);
+    const {data} = await axios.post(`${backendUrl}/auth/send-verify-otp`);
     console.log(data);
   }
 

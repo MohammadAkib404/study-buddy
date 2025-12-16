@@ -24,7 +24,7 @@ export default function Login() {
     }
 
     try {
-      const { data } = await axios.post(`${backendUrl}/login`, {email, password});
+      const { data } = await axios.post(`${backendUrl}/auth/login`, {email, password});
 
       if (data.success) {
         setIsLoggedIn(true);

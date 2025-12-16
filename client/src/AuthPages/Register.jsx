@@ -29,7 +29,7 @@ export default function Register() {
     console.log(form);
 
     try {
-    const {data} = await axios.post(`${backendUrl}/register`, {name, email, password});
+    const {data} = await axios.post(`${backendUrl}/auth/register`, {name, email, password});
     if(data.success){
       setIsLoggedIn(true);
       getUserData();

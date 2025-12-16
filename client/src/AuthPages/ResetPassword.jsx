@@ -26,7 +26,7 @@ export default function ResetPassword() {
       return toast.error("Please Enter Email");
     }
     setState("OTP");
-    const { data } = await axios.post(`${backendUrl}/send-reset-otp`, {
+    const { data } = await axios.post(`${backendUrl}/auth/send-reset-otp`, {
       email,
     });
     data.success ? toast.success(data.message) : toast.error(data.message);
@@ -36,7 +36,7 @@ export default function ResetPassword() {
   const checkOTP = async () => {
     const resetOtp = OTP.join("");
     setState("Password");
-    const { data } = await axios.post(`${backendUrl}/verify-reset-otp`, {
+    const { data } = await axios.post(`${backendUrl}/auth/verify-reset-otp`, {
       email,
       resetOtp,
     });
@@ -67,7 +67,7 @@ export default function ResetPassword() {
     const resetOtp = OTP.join("");
     const newPassword = password;
 
-    const { data } = await axios.post(`${backendUrl}/reset-password`, {
+    const { data } = await axios.post(`${backendUrl}/auth/reset-password`, {
       email,
       resetOtp,
       newPassword,
