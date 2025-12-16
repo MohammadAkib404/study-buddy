@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Upload, FileText, Download, Copy, AlertCircle, Plus, ChevronDown, ChevronRight, Brain, Sparkles } from "lucide-react";
-import { getMCQ, saveMCQ } from "../API_Connection";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import React, { useState } from "react";
+import { Upload, FileText, Download, Copy, AlertCircle, ChevronRight, } from "lucide-react";
+import { getMCQ } from "../API_Connection";
+import { toast } from "react-toastify";
 import Select from "../Components/Select";
 import MultiSelect from "../Components/MultiSelect";
 import MCQLoading from "../Components/MCQLoading";
@@ -36,10 +35,6 @@ const multiSelectData = [
 
 const TextExtractor = () => {
 
-  console.log('hi');
-
-  const navigate = useNavigate();
-
   const [text, setText] = useState(" ");
   const [extractedText, setExtractedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -56,24 +51,17 @@ const TextExtractor = () => {
 
   const generateMCQ = async (text) => {
     setQuestions('Generating');
-
     const id = toast.loading("Generating MCQ's");
-    const res = await getMCQ(text, variator);
-    console.log(res);
-    let parsedRes;
-    try {
-      parsedRes = JSON.parse(res);
-    } catch (error) {
-      console.error('Invalid Text was not Json', error)
-    }
-    setQuestions(parsedRes.questions);
-    saveMCQ(parsedRes.title, parsedRes.questions)
+
+    const mcqs = await getMCQ(text, variator);
+    console.log(mcqs);
+    setQuestions(mcqs.questions);
 
     toast.update(id, {
       render: "MCQ Generation complete ✅",
       type: "success",
       isLoading: false,
-      autoClose: 3000,
+      autoClose: 2000,
     });
   };
 
@@ -323,9 +311,7 @@ const TextExtractor = () => {
 
   return (
     <div className="max-w-3xl space-y-10 mx-auto pt-30 p-5 text-primary">
-      <ToastContainer />
       <Head />
-
       <div className="inline-flex flex-col gap b animate-pulseg-light p-8 w-full border border-border rounded-xl">
         <PDFUpload />
 

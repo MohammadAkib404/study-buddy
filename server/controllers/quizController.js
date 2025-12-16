@@ -1,3 +1,4 @@
+import userAuth from "../middlewares/userAuth.js";
 import quizModel from "../models/quizModel.js";
 import axios from "axios";
 
@@ -62,9 +63,8 @@ export const generateMCQ = async (req, res) => {
     const { data } = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "deepseek/deepseek-v3.2-exp",
+        model: "meta-llama/llama-3.1-8b-instruct",
         messages: [{ role: "user", content: `${prompt(text, variator)}` }],
-        max_tokens: 400,
         temperature: 0.9,
       },
       {
@@ -78,23 +78,27 @@ export const generateMCQ = async (req, res) => {
     );
 
     const content = data.choices[0].message.content;
-    res.json({ success: true, data: content });
+    let parsedContent;
+    try {
+      parsedContent = JSON.parse(content);
+    } catch (error) {
+      return res.json({success: false, message: `Failed to parse content: ${error}`});
+    }
+
+    res.json({ success: true, content: parsedContent });
+
+    // Saving Data
+    const userId = req.userId;
+    const title = parsedContent.title;
+    const mcqs = parsedContent.questions;
+    
+    const quiz = quizModel({userId, title, mcqs}); 
+    await quiz.save();
   } catch (error) {
     res.json({
       success: false,
-      message: `Failed to generate MCQs: ${error.message}`,
+      message: `Failed to generate and/or save MCQs: ${error.message}`,
     });
-  }
-};
-
-export const saveQuiz = async (req, res) => {
-  try {
-    const { title, mcqs } = req.body;
-    const quiz = new quizModel({ userId: req.userId, title, mcqs });
-    await quiz.save();
-    res.status(201).json({ message: "MCQ saved successfully!" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
 };
 
