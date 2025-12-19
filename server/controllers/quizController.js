@@ -1,4 +1,3 @@
-import userAuth from "../middlewares/userAuth.js";
 import quizModel from "../models/quizModel.js";
 import axios from "axios";
 
@@ -103,26 +102,26 @@ export const generateMCQ = async (req, res) => {
 };
 
 export const getTitles = async (req, res) => {
+  const {id} = req.query;
   try {
-    const quizzes = await quizModel.find(
-      { userId: req.userId },
-      { title: 1, _id: 0 }
+    const quizInfo = await quizModel.find(
+      {  },
+      { title: 1, }
     );
-    const titles = quizzes.map((el) => el.title);
-    res.json(titles);
+    res.json({success: true, content: quizInfo});
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch names" });
   }
 };
 
 export const getQuiz = async (req, res) => {
-  const { title } = req.query;
+  const { id } = req.query;
   try {
-    const quiz = await quizModel.find(
-      { userId: req.userId, title: title },
+    const quiz = await quizModel.findOne(
+      { _id: id, userId: req.userId },
       { mcqs: 1, _id: 0 }
     );
-    const questions = quiz[0].mcqs;
+    const questions = quiz.questions
     res.send(questions);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch questions" });

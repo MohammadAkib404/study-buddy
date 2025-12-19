@@ -8,19 +8,19 @@ function MCQSidebar() {
 
     const [isOpen, setIsOpen] = useState(true);
     const [darkTheme, setDarkTheme] = useState(false);
-    const [titles, setTitles] = useState();
+    const [quizInfo, setQuizInfo] = useState();
    
 
     useEffect(() => {
         (async () => {
-            const res = await axios.get(`http://localhost:5000/api/quizzes/titles`);
-            console.log(res.data);
-            setTitles(res.data);
+            const {data} = await axios.get(`http://localhost:5000/api/quizzes/titles`);
+            console.log(data.content);
+            setQuizInfo(data.content);
         })();
     }, [])
 
-    async function loadMCQ(title) {
-        const res = await axios.get(`http://localhost:5000/api/quizzes/quiz?title=${title}`);
+    const loadMCQ = async (id) => {
+        const res = await axios.get(`http://localhost:5000/api/quizzes/quiz?id=${id}`);
         console.log(res.data);
         const questions = res.data;
         navigate('/quiz', { state: questions })
@@ -93,13 +93,13 @@ function MCQSidebar() {
                             <Search />
                             <span>Search</span>
                         </div>
-                        {titles && titles.map((title, id) => (
+                        {quizInfo && quizInfo.map((info, id) => (
                             <span
                                 key={id}
                                 className={'cursor-pointer'}
-                                onClick={() => loadMCQ(title)}
+                                onClick={() => loadMCQ(info.id)}
                             >
-                                {title}
+                                {info.title}
                             </span>
                         ))}
                     </div>
