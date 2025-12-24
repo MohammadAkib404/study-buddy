@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import MCQSidebar from '../Components/MCQSidebar'
+import MCQSidebar from '../Components/Sidebar'
 import WorkspaceNav from '../Components/WorkspaceNav'
 import WorkArea from '../Components/WorkArea'
 import TextExtractor from './Text_Extractor';
