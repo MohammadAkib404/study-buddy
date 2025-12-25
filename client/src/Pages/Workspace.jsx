@@ -1,30 +1,30 @@
 import React, { useRef, useState } from 'react'
-import MCQSidebar from '../Components/Sidebar'
+import Sidebar from '../Components/Sidebar'
 import WorkspaceNav from '../Components/WorkspaceNav'
 import WorkArea from '../Components/WorkArea'
 import TextExtractor from './Text_Extractor';
 
 export default function Workspace() {
 
+  
   const [isOpen, setIsOpen] = useState(true);
-  const scrollRef = useRef(null);
 
   const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    }
+        setIsOpen(prev => !prev);
+  }
 
   return (
     <section className="flex w-full h-screen">
   <aside
     className={`${isOpen ? "fixed sm:sticky sm:w-60 z-99" : "w-0 sm:w-15"} transition-all duration-600`}
   >
-    <MCQSidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
+    <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
   </aside>
 
   <div className="flex flex-col flex-1 min-w-0">
     <WorkspaceNav isOpen={isOpen} toggleSidebar={toggleSidebar} />
     <div className="flex-1">
-      <TextExtractor />
+      <WorkArea />
     </div>
   </div>
 </section>
