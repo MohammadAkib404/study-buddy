@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BookOpen } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-import MCQSidebar from '../Components/MCQSidebar';
+import Sidebar from '../Components/Sidebar';
 
 function Quiz() {
 
@@ -107,7 +107,7 @@ function Quiz() {
 
     return (
         <section className='sm:p-5'>
-            <MCQSidebar/>
+            <Sidebar/>
             <div className='sm:border-1 rounded-2xl max-w-3xl px-6 sm:px-8 py-10 m-auto'>
                 <div className='flex gap-3 justify-between'>
                     <div className='flex items-center gap-2'>

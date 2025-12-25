@@ -3,7 +3,7 @@ import { ArrowRightFromLine, Bell, Bookmark, Home, Plus, Search, Settings, Sideb
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-function MCQSidebar({isOpen, toggleSidebar}) {
+function Sidebar({isOpen, toggleSidebar}) {
     const navigate = useNavigate();
 
     const [darkTheme, setDarkTheme] = useState(false);
@@ -102,4 +102,4 @@ function MCQSidebar({isOpen, toggleSidebar}) {
     );
 }
 
-export default MCQSidebar;
+export default Sidebar;
