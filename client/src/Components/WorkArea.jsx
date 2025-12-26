@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import Input from './Input'
 
-import { FileText, Image } from 'lucide-react';
+import { ArrowDown, FileText, Image } from 'lucide-react';
+import FilePreview from './FilePreview';
+import Attachments from './Attachments';
 
 export default function WorkArea() {
 
   const [isDragging, setIsDragging] = useState(false);
+  const [fileData, setFileData] = useState([])
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -14,38 +17,78 @@ export default function WorkArea() {
 
   const handleDragLeave = (e) => {
     e.preventDefault();
-    if(!e.currentTarget.contains(e.relatedTarget)){
+    if (!e.currentTarget.contains(e.relatedTarget)) {
       setIsDragging(false);
     }
   }
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    if (file && file.type === "application/pdf") {
-      // extractTextFromPDF(file);
-      console.log(file);
-    } else {
-      console.log("Please drop a valid PDF file");
-    }
+  const fileStatus = (file) => {
+  if (!file || !file.name) return null;
+
+  const parts = file.name.trim().split(".");
+  if (parts.length < 2) return null; // no extension found
+
+  let name = parts.shift();
+  const MAX_LENGTH = 15;
+  if(name.length > MAX_LENGTH){
+     const namePart = name.slice(0, MAX_LENGTH - 3);
+     name = namePart + "..."
   }
+  const ext = parts.pop().toLowerCase();
+
+  const validTypes = ["pdf", "docx", "txt"];
+  if (!validTypes.includes(ext)) return null;
+
+  if (file.type) {
+    if (ext === "pdf" && file.type !== "application/pdf") return null;
+    if (ext === "docx" && file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") return null;
+  }
+
+  return { name, type: ext.toUpperCase() };
+};
+
+
+  const handleDrop = (e) => {
+  e.preventDefault();
+  setIsDragging(false);
+
+  const files = e.dataTransfer.files
+
+  for (const file of files) {
+    const status = fileStatus(file);
+    if(status) setFileData(prev => [...prev, status]);
+  }
+};
+
 
   return (
     <main onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className="h-full pt-[25vh]">
-     <div className='w-full flex flex-col items-center'>
-      <strong className='text-[28px] font-semibold'>What do you want to Create?</strong>
-     <p className='mb-8 text-muted'>Upload your materials or type a topic to generate assessment.</p>
-     <Input/>
-     <div className={`${isDragging? "opacity-100 backdrop-blur-xs" : "opacity-0 backdrop-blur-none"} transition-all duration-400 flex flex-col gap-4 items-center pt-[30vh] bg-base/70 pointer-events fixed left-0 top-0 z-99 w-screen h-screen`}>
-      <div className='flex gap-5'>
-      <Image className='size-20 bg-transparent rounded-md -rotate-10'/>
-        <FileText className='size-20 rotate-30 '/>
+      <div className='w-full flex flex-col items-center'>
+        <strong className='text-[28px] font-semibold'>What do you want to Create?</strong>
+        <p className='mb-8 text-muted'>Upload your materials or type a topic to generate assessment.</p>
+        {/* <Input /> */}
+        <div className='w-7/10 flex flex-col border border-border rounded-2xl'>
+        <div className='flex gap-3 items-center px-3 py-2'>
+         {fileData.map((data, i) => (
+          <FilePreview fileData={data}/>
+         ))}
+        </div>
+        <Input/>
+        <div className='flex justify-between items-center px-3 py-1'>
+          <Attachments/>
+          <ArrowDown className='bg-primary text-white rounded-full p-1 size-8' />
+        </div>
       </div>
-      <h1 className='font-bold text-4xl mt-8'>Add Anything</h1>
-      <p className='text-muted font-bold text-xl'>Drop Files Here (PDF, Docx, Text)</p>
-     </div>
-     </div>
+
+        <div className={`${isDragging ? "opacity-100 backdrop-blur-xs" : "opacity-0 backdrop-blur-none"} pointer-events-none transition-all duration-400 flex flex-col gap-4 items-center pt-[30vh] bg-base/70 pointer-events fixed left-0 top-0 z-99 w-screen h-screen`}>
+          <div className='flex gap-5'>
+            <Image className='size-20 bg-transparent rounded-md -rotate-10' />
+            <FileText className='size-20 rotate-30 ' />
+          </div>
+          <h1 className='font-bold text-4xl mt-8'>Add Anything</h1>
+          <p className='text-muted font-bold text-xl'>Drop Files Here (PDF, Docx, Text)</p>
+        </div>
+      </div>
     </main>
   )
 }
