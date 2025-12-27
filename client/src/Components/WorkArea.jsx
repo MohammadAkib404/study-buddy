@@ -8,7 +8,7 @@ import Attachments from './Attachments';
 export default function WorkArea() {
 
   const [isDragging, setIsDragging] = useState(false);
-  const [fileData, setFileData] = useState([])
+  const [filesData, setFilesData] = useState([])
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -75,7 +75,7 @@ export default function WorkArea() {
           {filesData.length > 0? <FilesPreview filesData={filesData} setFilesData={setFilesData} /> : ""}
           <Input />
           <div className='flex justify-between items-center px-3 py-1'>
-            <Attachments />
+            <Attachments setFilesData={setFilesData} fileStatus={fileStatus} />
             <ArrowDown className='bg-primary text-white rounded-full p-1 size-8' />
           </div>
         </div>
