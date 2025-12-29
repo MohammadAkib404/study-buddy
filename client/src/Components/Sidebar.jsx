@@ -45,7 +45,7 @@ function Sidebar({isOpen, toggleSidebar}) {
     ];
 
     return (
-        <section className={`fixed h-screen ${isOpen ? "w-60 p-3 bg-base" : "w-0 p-0 sm:w-15 sm:p-1 sm:bg-base"} overflow-hidden space-y-2 border-r border-border transition-all duration-600`}
+        <section className={`fixed h-screen ${isOpen ? "w-60 p-3 bg-base" : "w-0 p-0 lg:w-15 lg:p-1 lg:bg-base"} overflow-hidden space-y-2 border-r border-border transition-all duration-600`}
         >
             <nav className="flex justify-between px-1 mb-5">
                 <img onClick={toggleSidebar} src="./Logo.png" alt="logo" className="size-7" />

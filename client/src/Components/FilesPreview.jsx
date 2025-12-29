@@ -1,14 +1,14 @@
 import { File, X } from "lucide-react";
 
-export default function FilesPreview({ filesData, setFilesData }) {
+export default function FilesPreview({ selectedFiles, setSelectedFiles }) {
 
   const removeFile = (i) => {
-   setFilesData(prev => prev.filter((_, index) => index !== i));
+   setSelectedFiles(prev => prev.filter((_, index) => index !== i));
   }
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 max-h-45 overflow-y-scroll sm:overflow-auto gap-3 items-center px-3 py-2 w-auto'>
-      {filesData?.map((data, i) => (
+      {selectedFiles?.map((data, i) => (
         <div key={i} className="bg-layer w-auto h-15 px-3 py-2 rounded-lg group">
           <div className="flex justify-between">
             <h4 className="font-semibold text-sm">{data.name}</h4>

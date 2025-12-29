@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-export default function Attachments({setFilesData, fileStatus}) {
+export default function Attachments({setSelectedFiles, fileStatus}) {
 
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
@@ -34,7 +34,7 @@ export default function Attachments({setFilesData, fileStatus}) {
     }
     console.log(data);
 
-    setFilesData(prev => prev? [...prev, ...data] : data);
+    setSelectedFiles(prev => prev? [...prev, ...data] : data);
     setIsOpen(false);
 
     console.log(files);

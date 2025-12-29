@@ -16,7 +16,7 @@ export default function Workspace() {
   return (
     <section className="flex w-full h-screen">
   <aside
-    className={`${isOpen ? "fixed sm:sticky sm:w-60 z-99" : "w-0 sm:w-15"} transition-all duration-600`}
+    className={`${isOpen ? "fixed lg:sticky lg:w-60 z-99" : "w-0 lg:w-15"} transition-all duration-600`}
   >
     <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
   </aside>
