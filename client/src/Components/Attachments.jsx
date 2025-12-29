@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-export default function Attachments({setSelectedFiles, fileStatus}) {
+export default function Attachments({handleFileChange}) {
 
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
@@ -21,23 +21,11 @@ export default function Attachments({setSelectedFiles, fileStatus}) {
     setIsOpen(prev => !prev);
   }
 
-  const handleFileChange = (e) => {
+  const handleUpload = (e) => {
     e.preventDefault();
-
     const files = e.target.files;
-    if(!files.length) return alert("Please Upload Proper File");
-
-    const data = [];
-    for (const file of files) {
-      const status = fileStatus(file);
-      if(status) data.push(status);
-    }
-    console.log(data);
-
-    setSelectedFiles(prev => prev? [...prev, ...data] : data);
+    handleFileChange(files);
     setIsOpen(false);
-
-    console.log(files);
   }
 
   return (
@@ -48,7 +36,7 @@ export default function Attachments({setSelectedFiles, fileStatus}) {
       </button>
       {isOpen && <div ref={ref} className="absolute w-30 top-9 flex flex-col bg-base px-2 py-2 border border-border rounded-lg">
         <div>
-          <input type="file" id="file-input" className="hidden" accept="application/pdf" onChange={handleFileChange} />
+          <input type="file" id="file-input" className="hidden" multiple max={2} onChange={handleUpload} />
           <label htmlFor="file-input">Add PDF</label>
         </div>
         <span>Use Mart</span>

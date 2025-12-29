@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Input from './Input'
-
 import { ArrowDown, FileText, Image } from 'lucide-react';
 import FilesPreview from './FilesPreview';
 import Attachments from './Attachments';
 import TopicVisualizer from './TopicVisualizer';
+import extractText from '../Utilities/extractText';
 
 export default function WorkArea() {
 
@@ -90,6 +90,8 @@ export default function WorkArea() {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([])
   const [prompt, setPrompt] = useState("");
+  const [keys, setKeys] = useState([]);
+  const [filesData, setFilesData] = useState([]);
 
   // #region File Handling Logic
   const handleDragOver = (e) => {
@@ -107,8 +109,12 @@ export default function WorkArea() {
   const fileStatus = (file) => {
     if (!file || !file.name) return null;
 
+    const key = `${file.name}_${file.size}_${file.lastModified}`;
+    if(keys.includes(key)) return null;
+    setKeys(prev => [...prev, key]);
+
     const parts = file.name.trim().split(".");
-    if (parts.length < 2) return null; // no extension found
+    if (parts.length < 2) return null;
 
     let name = parts.shift();
     const MAX_LENGTH = 18;
@@ -126,25 +132,57 @@ export default function WorkArea() {
       if (ext === "docx" && file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") return null;
     }
 
+    if(selectedFiles.some(f => (
+      f.name === file.name &&
+      f.size === file.size &&
+      f.lastModified === file.size
+    ))) return null;
+
     return { name, type: ext.toUpperCase() };
   };
+
+  const handleFileChange = async (files) => {
+    if (files.length < 1) return console.log("Please Upload proper file")
+
+    const MAX_FILES = 5;
+    const MAX_SIZE = 1024 * 1024 * 5
+    const filesArr = [...files].slice(0, MAX_FILES - selectedFiles.length);
+
+    if(filesArr.reduce((acc, curr) => acc + curr.size, 0) > MAX_SIZE){
+      console.log("File Size Exceeded!")
+      return;
+    }
+
+    let filesSelected = [];
+    let data = [];
+    for (const file of filesArr) {
+      const status = fileStatus(file);
+      if (status){
+        filesSelected.push(status);
+        const text = await extractText(file, status.type);
+        data.push(text);
+      } 
+    }
+    console.log(filesData);
+    console.log(data);
+    setSelectedFiles(prev => prev ? [...prev, ...filesSelected] : filesSelected);
+    setFilesData(prev => prev ? [...prev, ...data] : data);
+  }
 
 
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
 
-    const files = e.dataTransfer.files
-    if (files.length < 1) return console.log("Please Upload proper file")
-
-    let data = [];
-    for (const file of files) {
-      const status = fileStatus(file);
-      if (status) data.push(status);
-    }
-    console.log(data);
-    setSelectedFiles(prev => prev ? [...prev, ...data] : data);
+    const files = e.dataTransfer.files;
+    handleFileChange(files);
   };
+
+  const removeFile = (i) => {
+    setKeys(prev => prev.filter((_, index) => index !== i));
+   setSelectedFiles(prev => prev.filter((_, index) => index !== i));
+  }
+
   // #endregion
 
 
@@ -156,10 +194,10 @@ export default function WorkArea() {
         <p className='mb-8 text-muted'>Upload your materials or type a topic to generate assessment.</p>
 
         <div className='w-7/10 flex flex-col border border-border rounded-2xl'>
-          {selectedFiles.length > 0 ? <FilesPreview selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} /> : ""}
+          {selectedFiles.length > 0 ? <FilesPreview selectedFiles={selectedFiles} removeFile={removeFile} /> : ""}
           <Input prompt={prompt} setPrompt={setPrompt} />
           <div className='flex justify-between items-center px-3 py-1'>
-            <Attachments setSelectedFiles={setSelectedFiles} fileStatus={fileStatus} />
+            <Attachments handleFileChange={handleFileChange} />
             <ArrowDown className='bg-primary text-white rounded-full p-1 size-8' />
           </div>
         </div>

@@ -5,9 +5,8 @@ import WorkArea from '../Components/WorkArea'
 import TextExtractor from './Text_Extractor';
 
 export default function Workspace() {
-
-  
-  const [isOpen, setIsOpen] = useState(true);
+  // Sidebar
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
         setIsOpen(prev => !prev);
