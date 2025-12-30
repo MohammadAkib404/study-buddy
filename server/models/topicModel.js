@@ -26,10 +26,17 @@ const topicTreeSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  sourceId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Source",
+    required: true,
+  },
   tree: {
     type: topicNodeSchema,
     required: true
   }
 }, {timestamps: true});
 
-export default mongoose.model("TopicTree", topicTreeSchema)
+const Topics = mongoose.models.Topics || mongoose.model("Topics", topicTreeSchema);
+
+export default Topics;

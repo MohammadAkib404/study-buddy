@@ -1,4 +1,6 @@
 import axios from "axios";
+import Topics from "../models/topicModel.js";
+import Source from "../models/sourceModel.js";
 
 const API_KEY = process.env.OPENROUTER_API_KEY;
 
@@ -49,7 +51,7 @@ SCHEMA (NON-NEGOTIABLE)
 ====================
 HIERARCHY INTELLIGENCE RULES (CRITICAL)
 ====================
-- The Chapter MUST have 1–3 Main-Topics only.
+- The Chapter MUST have 1 to 3 Main-Topics only.
 - Main-Topics represent the **largest conceptual pillars** of the chapter.
   - If more than 3 candidates exist, MERGE them into broader themes.
   - Examples, case studies, groups, or regions must NEVER be Main-Topics.
@@ -165,9 +167,11 @@ export const generateTopics = async (req, res) => {
 
     const raw = data.choices[0].message.content.trim();
     const cleaned = raw
-      .replace(/^```(js|json)?/i, "")
-      .replace(/```$/, "")
+      .trim()
+      .replace(/^```(?:json)?/i, "")
+      .replace(/```$/i, "")
       .trim();
+
     let parsedContent;
     try {
       parsedContent = JSON.parse(cleaned);
@@ -178,11 +182,26 @@ export const generateTopics = async (req, res) => {
       });
     }
 
+    const userId = req.userId;
+    if (!userId)
+      return res.json({ success: false, message: "User ID not found!" });
+
+    const source = new Source({ userId, text: text });
+    await source.save();
+
+    const topics = new Topics({
+      userId,
+      sourceId: source._id,
+      tree: parsedContent,
+    });
+    await topics.save();
+
     return res.json({ success: true, content: parsedContent });
   } catch (error) {
     res.json({
       success: false,
-      message: `Failed to generate and/or save Topics: ${error.message}`,
+      message: `Failed to generate and/or save Topics`,
+      error: error
     });
   }
 };
