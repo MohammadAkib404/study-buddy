@@ -2,7 +2,7 @@ import axios from "axios";
 import Topics from "../models/topicModel.js";
 import Source from "../models/sourceModel.js";
 
-const API_KEY = process.env.OPENROUTER_API_KEY;
+const API_KEY = process.env.API_KEY;
 
 export function prompt(chapterText) {
   return `
@@ -11,7 +11,7 @@ You are an ontology construction engine trained to extract educational chapter s
 You must think like a curriculum designer, not a summarizer.
 
 PRIMARY OBJECTIVE:
-Convert the chapter text into a strictly valid JSON-based hierarchical topic tree that reflects how humans logically organize textbook chapters.
+Convert the chapter text into a strictly valid JSON-bgd hierarchical topic tree that reflects how humans logically organize textbook chapters.
 
 ====================
 CRITICAL OUTPUT CONSTRAINTS (ABSOLUTE)
@@ -149,18 +149,16 @@ export const generateTopics = async (req, res) => {
     }
 
     const { data } = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
+      "https://api.a4f.co/v1/chat/completions",
       {
-        model: "meta-llama/llama-3.1-8b-instruct",
-        messages: [{ role: "user", content: `${prompt(text)}` }],
+        model: "provider-2/gpt-oss-20b",
+        messages: [{ role: "user", content: prompt(text) }],
         temperature: 0.2,
       },
       {
         headers: {
           Authorization: `Bearer ${API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:5173",
-          "X-Title": "Topic Generator",
         },
       }
     );
@@ -183,8 +181,7 @@ export const generateTopics = async (req, res) => {
     }
 
     const userId = req.userId;
-    if (!userId)
-      return res.json({ success: false, message: "User ID not found!" });
+    if (!userId) return res.json({ success: false, message: "User ID not found!" });
 
     const source = new Source({ userId, text: text });
     await source.save();
@@ -201,7 +198,7 @@ export const generateTopics = async (req, res) => {
     res.json({
       success: false,
       message: `Failed to generate and/or save Topics`,
-      error: error
+      error: error,
     });
   }
 };

@@ -1,32 +1,34 @@
 import React, { useContext } from "react";
 import { useState } from "react";
-import AuthForm from "../Components/AuthForm";
-import { AppContext } from "../context/AppContext";
+import AuthForm from "./AuthForm";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 import axios from "axios";
-import { toast } from "react-toastify";
 
-export default function Login() {
-
+export default function Register() {
   const navigate = useNavigate();
 
-  const {backendUrl, setIsLoggedIn, getUserData} = useContext(AppContext);
+  const { backendUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
 
   const [form, setForm] = useState({
+    name: "",
     email: "",
     password: "",
   });
 
-  const login = async (e) => {
+  const register = async (e) => {
     e.preventDefault();
-    const { email, password } = form;
-    if (!email || !password) {
+
+    const { name, email, password } = form;
+
+    if (!name || !email || !password) {
       return console.log("Missing Detaills");
     }
 
-    try {
-      const { data } = await axios.post(`${backendUrl}/auth/login`, {email, password});
+    console.log(form);
 
+    try {
+      const { data } = await axios.post(`${backendUrl}/auth/register`, { name, email, password });
       if (data.success) {
         setIsLoggedIn(true);
         getUserData();
@@ -35,7 +37,7 @@ export default function Login() {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(`Error during Authentication ${error}`);
+      console.log(`Error during Authentication ${error.message}`);
       toast.error(error.message);
     }
   };
@@ -45,15 +47,7 @@ export default function Login() {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-    console.log(form);
   };
 
-  return (
-    <AuthForm
-      mode="Login"
-      form={form}
-      onChange={handleChange}
-      onSubmit={login}
-    />
-  );
+  return <AuthForm mode="Register" form={form} onChange={handleChange} onSubmit={register} />;
 }

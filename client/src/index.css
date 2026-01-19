@@ -3,8 +3,7 @@
 @custom-variant base (&:where([data-theme='base'], [data-theme='base'] *));
 
 @theme {
-  --color-base: hsl(0 0% 100%); /* Main background */
-  --color-compliment: hsl();
+  --color-bg: hsl(0 0% 100%); /* Main background */
   --color-layer: hsl(0 0% 95%); /* light / subtle background */
 
   --color-border: hsl(240, 5%, 84%); /* Border/dividers */
@@ -19,9 +18,7 @@
 
 @layer theme {
   [data-theme="dark"] {
-
-    --color-base: hsl(216 28% 7%);
-    /* --color-compliment: hsl(225, 29%, 10%); */
+    --color-bg: hsl(216 28% 7%);
     --color-layer: hsl(216 19% 11%);
 
     --color-border: hsl(218 7% 35%);
@@ -33,4 +30,9 @@
 
     --color-hover: hsl(0 0% 20%);
   }
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px black; /* stroke width & color */
+  color: transparent; /* fill color */
 }

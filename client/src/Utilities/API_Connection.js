@@ -13,6 +13,17 @@ const getMCQ = async (text, variator) => {
   }
 };
 
+const getQuiz = async (text, topics, variator) => {
+  try {
+    const {data} = await axios.post(`${backendUrl}/quizzes/generate-mcq`, {text, topics, variator})
+    console.log(data)
+    const mcqs = data.content;
+    return mcqs;
+  } catch (error) {
+    console.error("MCQ generation error:", error);
+  }
+};
+
 const getTopics = async (text) => {
   try {
     const {data} = await axios.post(`${backendUrl}/topics/generate`, {text})
@@ -24,4 +35,4 @@ const getTopics = async (text) => {
   }
 };
 
-export { getMCQ, getTopics };
+export { getMCQ, getQuiz, getTopics };

@@ -1,5 +1,5 @@
 import { AlignLeft, ChevronDown } from "lucide-react";
-import Profile from "./Profile";
+import Profile from "../shared/Profile";
 import { useEffect, useState } from "react";
 
 export default function WorkspaceNav({ toggleSidebar }) {
@@ -19,7 +19,7 @@ export default function WorkspaceNav({ toggleSidebar }) {
       className={`
         sticky top-0 z-50 h-12 w-full
         flex justify-between items-center px-5
-        bg-base transition-[border] duration-200
+        bg-bg transition-[border] duration-200
         ${scrolled ? "border-b border-border" : "border-b border-transparent"}
       `}
     >

@@ -3,7 +3,7 @@ import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LogOut, Mail } from "lucide-react";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -32,18 +32,24 @@ export default function Profile() {
   return isLoggedIn ? (
     <div className="relative flex justify-center items-center bg-teal-500 rounded-full size-10 text-white font-semibold mx-3 group">
       <span>{userData ? userData.name[0].toUpperCase() : "No"}</span>
-      <div className="flex-col items-start absolute top-10 right-5 p-3 w-max bg-red-500 space-y-1 hidden group-hover:flex">
-        <button onClick={logout}>Logout</button>
-        {!userData.isAccountVerified && <button onClick={verifyEmail}>Verify Email</button>}
+      <div className="flex-col items-start absolute top-10 right-5 px-3 sm:px-5 py-5 w-max bg-bg border border-border space-y-1 hidden group-hover:flex">
+        {!userData.isAccountVerified && <button onClick={verifyEmail} className="flex text-primary">
+          <Mail/>
+          <span>Verify Email</span>
+        </button>}
+
+        <button onClick={logout} className="flex text-primary">
+          <LogOut/>
+          <span>Logout</span>
+        </button>
       </div>
     </div>
   ) : (
     <button
       onClick={() => navigate("/register")}
-      className="flex gap-2 bg-brand text-white font-bold px-4 py-2 rounded-lg mx-4"
+      className="flex gap-2 bg-primary text-bg font-bold px-5 py-2 rounded-lg mx-4"
       >
-      <p className="w-max"> Sign Up</p>
-      <ArrowRight />
+      <p className="w-max">Login</p>
     </button>
   );
 }

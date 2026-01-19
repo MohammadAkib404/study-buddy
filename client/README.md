@@ -1,13 +1,13 @@
-# 📚 StudyBuddy — Learn Smarter, Not Harder
+# 📚 Learnix — Learn Smarter, Not Harder
 
-StudyBuddy is your AI-powered study companion. Just upload a chapter PDF, and it automatically generates intelligent Multiple Choice Questions (MCQs) tailored to your content — helping you study, revise, and retain knowledge effectively.
+Learnix is your AI-powered study companion. Just upload a chapter PDF, and it automatically generates intelligent Multiple Choice Questions (MCQs) tailored to your content — helping you study, revise, and retain knowledge effectively.
 
 ---
 
 ## ✨ Features
 
 - 🚀 **PDF to Quiz in Seconds**  
-  Upload your chapter PDF, and StudyBuddy instantly scans and generates quality MCQs.
+  Upload your chapter PDF, and Learnix instantly scans and generates quality MCQs.
 
 - 🧠 **AI-Powered Question Generation**  
   Questions are crafted using Natural Language Processing for relevance and accuracy.

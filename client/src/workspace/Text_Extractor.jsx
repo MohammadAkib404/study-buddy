@@ -1,40 +1,37 @@
 import React, { useState } from "react";
-import { Upload, FileText, Download, Copy, AlertCircle, ChevronRight, } from "lucide-react";
-import { getMCQ } from "../API_Connection";
+import { Upload, FileText, Download, Copy, AlertCircle, ChevronRight } from "lucide-react";
+import { getMCQ } from "../Utilities/API_Connection";
 import { toast } from "react-toastify";
-import Select from "../Components/Select";
-import MultiSelect from "../Components/MultiSelect";
-import MCQLoading from "../Components/MCQLoading";
+import Select from "./Select";
+// import MultiSelect from "./MultiSelect";
+import MCQLoading from "./MCQLoading";
 
 const selectData = [
   {
-    question: 'Select the number of MCQs to Generate',
+    question: "Select the number of MCQs to Generate",
     options: [5, 10, 15, 20, 30, 50],
-    name: 'mcqAmount'
+    name: "mcqAmount",
   },
   {
-    question: 'Select number of Options in the MCQ',
+    question: "Select number of Options in the MCQ",
     options: [2, 3, 4, 5],
-    name: 'noOfOpt'
-
+    name: "noOfOpt",
   },
-]
+];
 const multiSelectData = [
   {
-    question: 'Select Vocabulary Level',
-    options: ['Basic', 'Proficient', 'Expert', 'Elite'],
-    name: 'vocabularyLevel',
-
+    question: "Select Vocabulary Level",
+    options: ["Basic", "Proficient", "Expert", "Elite"],
+    name: "vocabularyLevel",
   },
   {
-    question: 'Select Difficulty Level',
-    options: ['Beginner', 'Intermediate', 'Advanced', 'Elite'],
-    name: 'difficultyLevel',
+    question: "Select Difficulty Level",
+    options: ["Beginner", "Intermediate", "Advanced", "Elite"],
+    name: "difficultyLevel",
   },
-]
+];
 
 const TextExtractor = () => {
-
   const [text, setText] = useState(" ");
   const [extractedText, setExtractedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -42,15 +39,14 @@ const TextExtractor = () => {
   const [error, setError] = useState("");
   const [questions, setQuestions] = useState(null);
   const [variator, setVariator] = useState({
-    mcqAmount: '',
-    noOfOpt: '',
-    vocabularyLevel: '',
-    difficultyLevel: '',
+    mcqAmount: "",
+    noOfOpt: "",
+    vocabularyLevel: "",
+    difficultyLevel: "",
   });
 
-
   const generateMCQ = async (text) => {
-    setQuestions('Generating');
+    setQuestions("Generating");
     const id = toast.loading("Generating MCQ's");
 
     const mcqs = await getMCQ(text, variator);
@@ -73,8 +69,7 @@ const TextExtractor = () => {
       // Load PDF.js from CDN
       if (!window.pdfjsLib) {
         const script = document.createElement("script");
-        script.src =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
         document.head.appendChild(script);
 
         await new Promise((resolve, reject) => {
@@ -83,8 +78,7 @@ const TextExtractor = () => {
         });
 
         // Set worker path
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
       }
 
       const arrayBuffer = await file.arrayBuffer();
@@ -163,26 +157,25 @@ const TextExtractor = () => {
           <FileText className="w-8 h-8 text-gray-100" />
         </div>
         <h1 className="text-4xl font-bold mb-2">AI MCQ's Generator</h1>
-        <p className="text-lg text-muted">
-          Upload a PDF file and extract all its text content and generate MCQ
-          Question with AI
-        </p>
+        <p className="text-lg text-muted">Upload a PDF file and extract all its text content and generate MCQ Question with AI</p>
       </div>
-    )
+    );
   }
 
   function PDFUpload() {
     return (
       <div className="w-full mb-5" onChange={handleFileUpload} onDragOver={handleDragOver} onDrop={handleDrop}>
         <h3 className="font-semibold mb-2">Upload PDF Document</h3>
-        <div className="bg-base flex flex-col items-center gap-5 p-5 border-3 border-blue-500 border-dashed rounded-lg ">
+        <div className="bg-bg flex flex-col items-center gap-5 p-5 border-3 border-blue-500 border-dashed rounded-lg ">
           <Upload className="w-15 h-15" />
           <p>Drag & Drop One</p>
           <input type="file" accept=".pdf" className="hidden" id="pdf" />
-          <label htmlFor="pdf" className="bg-brand py-3 px-5 rounded-md text-white">Choose a PDF File</label>
+          <label htmlFor="pdf" className="bg-brand py-3 px-5 rounded-md text-white">
+            Choose a PDF File
+          </label>
         </div>
       </div>
-    )
+    );
   }
 
   function TextArea() {
@@ -193,10 +186,12 @@ const TextExtractor = () => {
           className="w-full border border-border rounded-lg h-32 p-4 outline-none ring-gray-300 focus:ring-1.5 focus:shadow-[0_0_10px_rgba(0,0,0,0.25)]"
           placeholder="Paste notes or chapter text here"
           value={text}
-          onChange={(e) => { setText(e.target.value) }}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
         ></textarea>
       </div>
-    )
+    );
   }
 
   function ExtractedTextDisplay() {
@@ -204,9 +199,7 @@ const TextExtractor = () => {
       <>
         <div className="bg-white rounded-xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-800">
-              Extracted Text from: {fileName}
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800">Extracted Text from: {fileName}</h2>
             <div className="flex gap-2">
               <button
                 onClick={copyToClipboard}
@@ -226,27 +219,18 @@ const TextExtractor = () => {
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4 max-h-56 overflow-y-auto">
-            <pre className="whitespace-pre-wrap text-sm text-gray-800 font-mono leading-relaxed">
-              {extractedText}
-            </pre>
+            <pre className="whitespace-pre-wrap text-sm text-gray-800 font-mono leading-relaxed">{extractedText}</pre>
           </div>
 
           <div className="flex justify-between mt-4 text-sm text-gray-500">
             <div>
               <p>Characters: {extractedText.length}</p>
-              <p>
-                Words:{" "}
-                {
-                  extractedText
-                    .split(/\s+/)
-                    .filter((word) => word.length > 0).length
-                }
-              </p>
+              <p>Words: {extractedText.split(/\s+/).filter((word) => word.length > 0).length}</p>
             </div>
           </div>
         </div>
       </>
-    )
+    );
   }
 
   function MCQButton() {
@@ -258,9 +242,8 @@ const TextExtractor = () => {
         <span className="p-3 border-r border-border">Generate MCQ</span>
         <ChevronRight className="opacity-90 text-" />
       </button>
-    )
+    );
   }
-
 
   function ErrorDisplay() {
     return (
@@ -268,9 +251,8 @@ const TextExtractor = () => {
         <AlertCircle className="w-5 h-5 text-red-500 mr-3" />
         <span className="text-red-700">{error}</span>
       </div>
-    )
+    );
   }
-
 
   function PDFLoadingState() {
     return (
@@ -278,20 +260,15 @@ const TextExtractor = () => {
         <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
         <p className="text-gray-600">Extracting text from PDF...</p>
       </div>
-    )
+    );
   }
 
   function Instructions() {
     return (
       <div className="bg-light border-1 border-border rounded-xl p-4 sm:p-6">
-        <h3 className="text-lg font-semibold text-primary mb-3">
-          How to use:
-        </h3>
+        <h3 className="text-lg font-semibold text-primary mb-3">How to use:</h3>
         <ol className="list-decimal list-inside space-y-2 text-sm sm:text-lg text-primary">
-          <li>
-            Click "Choose PDF File" or drag and drop a PDF file into the
-            upload area
-          </li>
+          <li>Click "Choose PDF File" or drag and drop a PDF file into the upload area</li>
           <li>Wait for the text extraction process to complete</li>
           <li>Review the extracted text in the display area</li>
           <li>Copy the text to clipboard or download it as a text file</li>
@@ -299,15 +276,13 @@ const TextExtractor = () => {
 
         <div className="mt-6 p-3 bg-brand/10 border border-text/70 rounded-lg">
           <p className="text-xs sm:text-sm text-primary">
-            <strong>Note:</strong> This tool works best with text-based
-            PDFs. Scanned documents or image-based PDFs may not extract
-            properly and would require OCR processing.
+            <strong>Note:</strong> This tool works best with text-bgd PDFs. Scanned documents or image-bgd PDFs may not extract properly and would require OCR
+            processing.
           </p>
         </div>
       </div>
-    )
+    );
   }
-
 
   return (
     <div className="max-w-3xl space-y-10 mx-auto pt-30 p-5 text-primary">
@@ -315,9 +290,7 @@ const TextExtractor = () => {
       <div className="inline-flex flex-col gap b animate-pulseg-light p-8 w-full border border-border rounded-xl">
         <PDFUpload />
 
-        {!extractedText && !isLoading &&
-          <TextArea />
-        }
+        {!extractedText && !isLoading && <TextArea />}
 
         {isLoading && <PDFLoadingState />}
 
@@ -326,23 +299,11 @@ const TextExtractor = () => {
         {error && <ErrorDisplay />}
 
         {selectData.map((data, i) => (
-          <Select
-            key={i}
-            question={data.question}
-            options={data.options}
-            name={data.name}
-            setVariator={setVariator}
-          />
+          <Select key={i} question={data.question} options={data.options} name={data.name} setVariator={setVariator} />
         ))}
 
         {multiSelectData.map((data, i) => (
-          <MultiSelect
-            key={i}
-            question={data.question}
-            options={data.options}
-            name={data.name}
-            setVariator={setVariator}
-          />
+          <MultiSelect key={i} question={data.question} options={data.options} name={data.name} setVariator={setVariator} />
         ))}
 
         <MCQButton />
@@ -351,7 +312,6 @@ const TextExtractor = () => {
       {questions && <MCQLoading questions={questions} />}
 
       <Instructions />
-
     </div>
   );
 };
