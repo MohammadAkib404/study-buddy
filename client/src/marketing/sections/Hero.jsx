@@ -21,7 +21,7 @@ function Hero() {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-5">
-            <button onClick={() => navigate("/register")} className="group cursor-pointer rounded-xl bg-black px-10 py-3 text-sm font-bold uppercase tracking-wider text-white">Try Now</button>
+            <button onClick={() => navigate("/workspace")} className="group cursor-pointer rounded-xl bg-black px-10 py-3 text-sm font-bold uppercase tracking-wider text-white">Try Now</button>
             <button className="rounded-xl px-5 py-3 text-sm font-bold uppercase tracking-wider border border-zinc-700 text-zinc-700 hover:bg-zinc-100 transition-colors"> View Archive →</button>
           </div>
         </div>

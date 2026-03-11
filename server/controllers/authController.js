@@ -7,6 +7,7 @@ import {
 } from "../config/emailTemplates.js";
 import transporter from "../config/nodemailer.js";
 
+
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
 

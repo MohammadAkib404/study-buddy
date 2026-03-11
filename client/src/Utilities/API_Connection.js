@@ -4,8 +4,8 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const getMCQ = async (text, variator) => {
   try {
-    const {data} = await axios.post(`${backendUrl}/quizzes/generate-mcq`, {text, variator})
-    console.log(data)
+    const { data } = await axios.post(`${backendUrl}/quizzes/generate-mcq`, { text, variator });
+    console.log(data);
     const mcqs = data.content;
     return mcqs;
   } catch (error) {
@@ -15,8 +15,10 @@ const getMCQ = async (text, variator) => {
 
 const getQuiz = async (text, topics, variator) => {
   try {
-    const {data} = await axios.post(`${backendUrl}/quizzes/generate-mcq`, {text, topics, variator})
-    console.log(data)
+    // ensure we send a plain array; JSON.stringify on a Set results in "{}"
+    const topicList = Array.isArray(topics) ? topics : Array.from(topics || []);
+    const { data } = await axios.post(`${backendUrl}/quizzes/generate-mcq`, { text, topics: topicList, variator });
+    console.log(data);
     const mcqs = data.content;
     return mcqs;
   } catch (error) {
@@ -26,8 +28,8 @@ const getQuiz = async (text, topics, variator) => {
 
 const getTopics = async (text) => {
   try {
-    const {data} = await axios.post(`${backendUrl}/topics/generate`, {text})
-    console.log(data)
+    const { data } = await axios.post(`${backendUrl}/topics/generate`, { text });
+    console.log(data);
     const topics = data.content;
     return topics;
   } catch (error) {

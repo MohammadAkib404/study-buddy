@@ -39,7 +39,7 @@ const TreeNode = memo(function TreeNode({ node, depth = 0, selectedTopics, toggl
   );
 });
 
-export default function TopicVisualizer({ data, generateQuiz }) {
+export default function TopicVisualizer({ data, onGenerate }) {
   const [selectedTopics, setSelectedTopics] = useState(() => new Set());
 
   useEffect(() => console.log(selectedTopics), [selectedTopics]);
@@ -60,7 +60,11 @@ export default function TopicVisualizer({ data, generateQuiz }) {
     <div className="bg-bg w-full flex flex-col items-center py-12">
       <div className="min-w-9/10 max-w-3xl bg-layer px-8 py-10 rounded-4xl border border-border">
         <TreeNode node={data} selectedTopics={selectedTopics} toggleTopic={toggleTopic} />
-        <button onClick={() => generateQuiz(selectedTopics)} className="ml-auto border border-border p-3 px-6 text-bg bg-primary font-semibold rounded-lg">Generate</button>
+        {onGenerate && (
+          <button onClick={() => onGenerate(selectedTopics)} className="ml-auto border border-border p-3 px-6 text-bg bg-primary font-semibold rounded-lg">
+            Generate
+          </button>
+        )}
       </div>
     </div>
   );

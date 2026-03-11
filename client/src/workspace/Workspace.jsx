@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Sidebar from "../workspace/Sidebar";
 import WorkspaceNav from "../workspace/WorkspaceNav";
-import WorkArea from "../workspace/WorkArea";
+import WorkArea from "./workarea/WorkArea";
 import TextExtractor from "./Text_Extractor";
 
 export default function Workspace() {

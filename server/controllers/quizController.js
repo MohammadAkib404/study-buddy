@@ -65,9 +65,9 @@ export const generateMCQ = async (req, res) => {
     }
 
     const { data } = await axios.post(
-      "https://api.a4f.co/v1/chat/completions",
+      "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "provider-2/gpt-oss-20b",
+        model: "stepfun/step-3.5-flash:free",
         messages: [{ role: "user", content: prompt(text, topics, variator) }],
         temperature: 0.9,
       },

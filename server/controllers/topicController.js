@@ -149,9 +149,9 @@ export const generateTopics = async (req, res) => {
     }
 
     const { data } = await axios.post(
-      "https://api.a4f.co/v1/chat/completions",
+      "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "provider-2/gpt-oss-20b",
+        model: "stepfun/step-3.5-flash:free",
         messages: [{ role: "user", content: prompt(text) }],
         temperature: 0.2,
       },
@@ -160,7 +160,7 @@ export const generateTopics = async (req, res) => {
           Authorization: `Bearer ${API_KEY}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     const raw = data.choices[0].message.content.trim();

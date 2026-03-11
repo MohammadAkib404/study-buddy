@@ -3,7 +3,7 @@ import { BookOpen } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
-function Quiz() {
+function Quiz({resData}) {
   const dummyData = [
     {
       question: "Who led the Nazi Party in Germany?",
@@ -87,7 +87,7 @@ function Quiz() {
 
   console.log(location.state);
 
-  const quizData = data;
+  const quizData = resData;
 
   const [index, setIndex] = useState(0);
   const currentQuestion = quizData[index];

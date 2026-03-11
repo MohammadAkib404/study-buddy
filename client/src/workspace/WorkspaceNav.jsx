@@ -18,7 +18,7 @@ export default function WorkspaceNav({ toggleSidebar }) {
     <nav
       className={`
         sticky top-0 z-50 h-12 w-full
-        flex justify-between items-center px-5
+        flex justify-between items-center px-4 py-8
         bg-bg transition-[border] duration-200
         ${scrolled ? "border-b border-border" : "border-b border-transparent"}
       `}
